@@ -1,0 +1,26 @@
+# Virtual environments
+.venv/
+venv/
+
+# Local configuration
+.env
+.env.example
+*.env.example
+
+# Python caches and build artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Test and coverage artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
