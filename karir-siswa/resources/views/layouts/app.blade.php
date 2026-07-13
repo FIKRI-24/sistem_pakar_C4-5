@@ -377,55 +377,397 @@
             border-color: #0f766e;
         }
 
-        @media (max-width: 640px) {
-            .topbar {
-                align-items: flex-start;
-                flex-direction: column;
+        /* Sidebar layout and components */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            background: #f8fafc;
+        }
+
+        .sidebar {
+            width: 270px;
+            background: #ffffff;
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 28px 20px;
+            position: fixed;
+            height: 100vh;
+            box-sizing: border-box;
+            z-index: 100;
+            transition: left 0.3s ease;
+        }
+
+        .sidebar-brand {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #0f766e;
+            padding: 0 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.025em;
+        }
+
+        .sidebar-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 36px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            color: #475569;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .sidebar-link svg {
+            color: #64748b;
+            transition: color 0.2s;
+        }
+
+        .sidebar-link:hover {
+            background: #f1f5f9;
+            color: #0f766e;
+        }
+
+        .sidebar-link:hover svg {
+            color: #0f766e;
+        }
+
+        .sidebar-link.active {
+            background: #f1f5f9;
+            color: #0f766e;
+            font-weight: 700;
+        }
+
+        .sidebar-link.active svg {
+            color: #0f766e;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 270px;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+
+        .main-header {
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 clamp(20px, 4vw, 40px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .main-header-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.025em;
+        }
+
+        .main-body {
+            padding: 32px clamp(20px, 4vw, 40px);
+            flex: 1;
+            box-sizing: border-box;
+        }
+
+        .profile-dropdown-btn {
+            background: none;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #1e293b;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .profile-dropdown-btn:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+
+        .profile-dropdown-btn .role-indicator {
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: #f0fdf4;
+            color: #0f766e;
+            padding: 2px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+
+        .profile-dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            margin-top: 8px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            width: 160px;
+            overflow: hidden;
+            z-index: 200;
+        }
+
+        .profile-dropdown-menu a {
+            display: block;
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #475569;
+            text-decoration: none;
+            transition: background 0.15s;
+        }
+
+        .profile-dropdown-menu a:hover {
+            background: #f8fafc;
+        }
+
+        /* Mobile specific styles */
+        .mobile-sidebar-toggle {
+            display: none;
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #0f766e;
+            color: #ffffff;
+            border: none;
+            box-shadow: 0 10px 15px -3px rgba(15, 118, 110, 0.3);
+            z-index: 150;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                left: -270px;
             }
 
-            .nav-actions {
-                width: 100%;
-                justify-content: space-between;
-                flex-wrap: wrap;
-                gap: 8px;
+            .sidebar.open {
+                left: 0;
+                box-shadow: 10px 0 25px -5px rgba(0,0,0,0.1);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .mobile-sidebar-toggle {
+                display: flex;
             }
         }
     </style>
 </head>
 <body>
-    <div class="shell">
-        @auth
-            <header class="topbar">
+    @auth
+        <div class="app-container">
+            <!-- Mobile Toggle Button -->
+            <button class="mobile-sidebar-toggle" onclick="toggleMobileSidebar()" aria-label="Toggle Sidebar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+            </button>
+
+            <!-- Sidebar -->
+            <aside class="sidebar" id="sidebar">
                 <div>
-                    <div class="brand">Sistem Pakar Karir Siswa</div>
+                    <!-- Brand/Logo -->
+                    <div class="sidebar-brand">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        <span>Sistem Pakar Karir</span>
+                    </div>
+
+                    <!-- Navigation Menu -->
+                    <nav class="sidebar-menu">
+                        @if (auth()->user()->isRole(\App\Models\User::ROLE_ADMIN))
+                            <!-- Admin Navigation -->
+                            <a href="{{ route('admin.dashboard') }}" class="sidebar-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="{{ route('admin.siswas.index') }}" class="sidebar-link {{ request()->routeIs('admin.siswas.*') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                <span>Kelola Siswa</span>
+                            </a>
+                            <a href="{{ route('admin.kriterias.index') }}" class="sidebar-link {{ request()->routeIs('admin.kriterias.*') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="6" height="6" rx="1"/><path d="m3 17 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/><rect x="3" y="11" width="6" height="6" rx="1"/></svg>
+                                <span>Kriteria</span>
+                            </a>
+                            <a href="{{ route('admin.karirs.index') }}" class="sidebar-link {{ request()->routeIs('admin.karirs.*') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
+                                <span>Alternatif Karir</span>
+                            </a>
+                            <a href="{{ route('admin.tes.index') }}" class="sidebar-link {{ (request()->routeIs('admin.tes.*') && !request()->routeIs('admin.tes.hasil-tes') && !request()->routeIs('admin.tes.rekomendasi-karir')) ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>
+                                <span>Tes</span>
+                            </a>
+                            <a href="{{ route('admin.soals.index') }}" class="sidebar-link {{ request()->routeIs('admin.soals.*') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><path d="M12 17h.01"/></svg>
+                                <span>Soal</span>
+                            </a>
+                            <a href="{{ route('admin.tes.hasil-tes') }}" class="sidebar-link {{ request()->routeIs('admin.tes.hasil-tes') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+                                <span>Hasil Tes</span>
+                            </a>
+                            <a href="{{ route('admin.tes.rekomendasi-karir') }}" class="sidebar-link {{ request()->routeIs('admin.tes.rekomendasi-karir') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <span>Rekomendasi Karir</span>
+                            </a>
+                            <a href="{{ route('admin.data-trainings.index') }}" class="sidebar-link {{ request()->routeIs('admin.data-trainings.*') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+                                <span>Data Training</span>
+                            </a>
+                            <a href="{{ route('admin.c45.status') }}" class="sidebar-link {{ request()->routeIs('admin.c45.status') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                                <span>Status C4.5</span>
+                            </a>
+                        @elseif (auth()->user()->isRole(\App\Models\User::ROLE_GURU_BK))
+                            <!-- Guru BK Navigation (MATCH PROPOSAL SCREENSHOT) -->
+                            <a href="{{ route('guru-bk.dashboard') }}" class="sidebar-link {{ request()->routeIs('guru-bk.dashboard') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="{{ route('admin.tes.index') }}" class="sidebar-link {{ (request()->routeIs('admin.tes.*') && !request()->routeIs('admin.tes.hasil-tes') && !request()->routeIs('admin.tes.rekomendasi-karir')) ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>
+                                <span>Tes</span>
+                            </a>
+                            <a href="{{ route('admin.soals.index') }}" class="sidebar-link {{ request()->routeIs('admin.soals.*') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><path d="M12 17h.01"/></svg>
+                                <span>Soal</span>
+                            </a>
+                            <a href="{{ route('admin.tes.hasil-tes') }}" class="sidebar-link {{ request()->routeIs('admin.tes.hasil-tes') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+                                <span>Hasil Tes</span>
+                            </a>
+                            <a href="{{ route('admin.tes.rekomendasi-karir') }}" class="sidebar-link {{ request()->routeIs('admin.tes.rekomendasi-karir') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <span>Rekomendasi Karir</span>
+                            </a>
+                        @elseif (auth()->user()->isRole(\App\Models\User::ROLE_SISWA))
+                            <!-- Siswa Navigation -->
+                            <a href="{{ route('siswa.dashboard') }}" class="sidebar-link {{ request()->routeIs('siswa.dashboard') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="{{ route('siswa.konsultasi.index') }}" class="sidebar-link {{ request()->routeIs('siswa.konsultasi.*') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>
+                                <span>Isi Kuesioner</span>
+                            </a>
+                            <a href="{{ route('siswa.hasil-tes.index') }}" class="sidebar-link {{ request()->routeIs('siswa.hasil-tes.*') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+                                <span>Riwayat Hasil</span>
+                            </a>
+                        @endif
+                    </nav>
                 </div>
 
-                <div class="nav-actions">
-                    <span class="role-badge" style="margin-right: 8px;">{{ str_replace('_', ' ', auth()->user()->role) }}</span>
-                    @if (auth()->user()->isRole(\App\Models\User::ROLE_ADMIN))
-                        <a href="{{ route('admin.siswas.index') }}" class="{{ request()->routeIs('admin.siswas.*') ? 'active' : '' }}">Siswa</a>
-                        <a href="{{ route('admin.kriterias.index') }}" class="{{ request()->routeIs('admin.kriterias.*') ? 'active' : '' }}">Kriteria</a>
-                        <a href="{{ route('admin.karirs.index') }}" class="{{ request()->routeIs('admin.karirs.*') ? 'active' : '' }}">Karir</a>
-                        <a href="{{ route('admin.tes.index') }}" class="{{ (request()->routeIs('admin.tes.*') || request()->routeIs('admin.tes.buat-lengkap')) ? 'active' : '' }}">Tes</a>
-                        <a href="{{ route('admin.data-trainings.index') }}" class="{{ request()->routeIs('admin.data-trainings.*') ? 'active' : '' }}">Training</a>
-                        <a href="{{ route('admin.c45.status') }}" class="{{ request()->routeIs('admin.c45.*') ? 'active' : '' }}">Status C4.5</a>
-                    @elseif (auth()->user()->isRole(\App\Models\User::ROLE_SISWA))
-                        <a href="{{ route('siswa.konsultasi.index') }}" class="{{ request()->routeIs('siswa.konsultasi.*') ? 'active' : '' }}">Konsultasi</a>
-                        <a href="{{ route('siswa.hasil-tes.index') }}" class="{{ request()->routeIs('siswa.hasil-tes.*') ? 'active' : '' }}">Hasil Tes</a>
-                    @elseif (auth()->user()->isRole(\App\Models\User::ROLE_GURU_BK))
-                        <a href="{{ route('admin.tes.index') }}" class="{{ (request()->routeIs('admin.tes.*') || request()->routeIs('admin.tes.buat-lengkap')) ? 'active' : '' }}">Tes</a>
-                    @endif
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button class="button secondary" type="submit">Logout</button>
-                    </form>
+                <div>
+                    <!-- Bottom Menu: Pengaturan & Keluar -->
+                    <div style="border-top: 1px solid #e2e8f0; padding-top: 16px; display: flex; flex-direction: column; gap: 8px;">
+                        <a href="{{ route('dashboard') }}" class="sidebar-link {{ request()->is('settings*') ? 'active' : '' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                            <span>Pengaturan</span>
+                        </a>
+                        <form method="POST" action="{{ route('logout') }}" id="logout-form" style="display: none;">
+                            @csrf
+                        </form>
+                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="sidebar-link" style="color: #ef4444;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+                            <span>Keluar</span>
+                        </a>
+                    </div>
                 </div>
-            </header>
-        @endauth
+            </aside>
 
+            <!-- Main Content Area -->
+            <div class="main-content">
+                <!-- Header -->
+                <header class="main-header">
+                    <div class="main-header-title">
+                        {{ $title ?? 'Dashboard' }}
+                    </div>
+
+                    <!-- Profile Dropdown -->
+                    <div style="position: relative;" id="profile-dropdown-wrapper">
+                        <button onclick="toggleProfileDropdown()" class="profile-dropdown-btn">
+                            <span>{{ auth()->user()->name }}</span>
+                            <span class="role-indicator">{{ str_replace('_', ' ', auth()->user()->role) }}</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:4px;"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div id="profile-dropdown-menu" class="profile-dropdown-menu">
+                            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="color: #ef4444; display: flex; align-items: center; gap: 8px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+                                <span>Keluar</span>
+                            </a>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Body content -->
+                <main class="main-body">
+                    @yield('content')
+                </main>
+            </div>
+        </div>
+    @else
+        <!-- Guest View (e.g. Login page) -->
         <main class="content">
             @yield('content')
         </main>
-    </div>
+    @endauth
+
+    <!-- Mobile Navigation Toggle Script -->
+    <script>
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        function toggleProfileDropdown() {
+            const menu = document.getElementById('profile-dropdown-menu');
+            if (menu.style.display === 'block') {
+                menu.style.display = 'none';
+            } else {
+                menu.style.display = 'block';
+            }
+        }
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', function(e) {
+            const wrapper = document.getElementById('profile-dropdown-wrapper');
+            const menu = document.getElementById('profile-dropdown-menu');
+            if (wrapper && menu && !wrapper.contains(e.target)) {
+                menu.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>

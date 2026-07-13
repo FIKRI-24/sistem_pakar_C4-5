@@ -8,6 +8,11 @@ use App\Models\PilihanJawaban;
 use App\Models\Soal;
 use App\Models\Tes;
 use App\Models\User;
+use App\Models\Siswa;
+use App\Models\HasilTes;
+use App\Models\HasilTesDetail;
+use App\Models\Karir;
+use App\Models\RekomendasiKarir;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -55,9 +60,82 @@ class AssessmentCrudTest extends TestCase
         $this->assertDatabaseHas('tes', ['nama_tes' => 'Tes Potensi Karir Final', 'status_aktif' => 0]);
 
         $this->actingAs($admin)->delete(route('admin.tes.destroy', $tes));
-        $this->assertDatabaseMissing('tes', ['id' => $tes->id]);
+        $this->assertSoftDeleted('tes', ['id' => $tes->id]);
     }
+    public function test_deleting_tes_cascades_soals_and_results(): void
+    {
+        $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
+        $user = User::factory()->create(['role' => User::ROLE_SISWA]);
+        $siswa = Siswa::create([
+            'user_id' => $user->id,
+            'nis' => '12345',
+            'kelas' => 'XII',
+            'jurusan' => 'Teknik Komputer',
+        ]);
+        
+        $tes = Tes::create(['nama_tes' => 'Tes Cascade', 'status_aktif' => true]);
+        $kriteria = Kriteria::create(['nama_kriteria' => 'Kriteria X', 'tipe_data' => Kriteria::TYPE_KATEGORIK]);
+        
+        $soal = Soal::create([
+            'tes_id' => $tes->id,
+            'kriteria_id' => $kriteria->id,
+            'pertanyaan' => 'Pertanyaan X',
+            'urutan' => 1
+        ]);
+        
+        $pilihan = PilihanJawaban::create([
+            'soal_id' => $soal->id,
+            'pilihan' => 'Pilihan X',
+            'skor' => 5
+        ]);
+        
+        $hasil = HasilTes::create([
+            'siswa_id' => $siswa->id,
+            'tes_id' => $tes->id,
+            'tanggal_tes' => now()
+        ]);
+        
+        $detail = HasilTesDetail::create([
+            'hasil_tes_id' => $hasil->id,
+            'kriteria_id' => $kriteria->id,
+            'nilai_kategorik' => 'Nilai X'
+        ]);
+        
+        $karir = Karir::create(['nama_karir' => 'Karir X']);
+        $rekomendasi = RekomendasiKarir::create([
+            'hasil_tes_id' => $hasil->id,
+            'karir_id' => $karir->id,
+            'persen_kecocokan' => 80.5,
+            'alasan' => 'Alasan X'
+        ]);
+        
+        $this->assertDatabaseHas('tes', ['id' => $tes->id]);
+        $this->assertDatabaseHas('soals', ['id' => $soal->id]);
+        $this->assertDatabaseHas('pilihan_jawabans', ['id' => $pilihan->id]);
+        $this->assertDatabaseHas('hasil_tes', ['id' => $hasil->id]);
+        $this->assertDatabaseHas('hasil_tes_detail', ['id' => $detail->id]);
+        $this->assertDatabaseHas('rekomendasi_karirs', ['id' => $rekomendasi->id]);
+        
+        // 1. Soft delete: keeps results and questions intact
+        $this->actingAs($admin)->delete(route('admin.tes.destroy', $tes));
+        
+        $this->assertSoftDeleted('tes', ['id' => $tes->id]);
+        $this->assertDatabaseHas('soals', ['id' => $soal->id]);
+        $this->assertDatabaseHas('pilihan_jawabans', ['id' => $pilihan->id]);
+        $this->assertDatabaseHas('hasil_tes', ['id' => $hasil->id]);
+        $this->assertDatabaseHas('hasil_tes_detail', ['id' => $detail->id]);
+        $this->assertDatabaseHas('rekomendasi_karirs', ['id' => $rekomendasi->id]);
 
+        // 2. Force delete: cascades and deletes everything from the database
+        $tes->forceDelete();
+
+        $this->assertDatabaseMissing('tes', ['id' => $tes->id]);
+        $this->assertDatabaseMissing('soals', ['id' => $soal->id]);
+        $this->assertDatabaseMissing('pilihan_jawabans', ['id' => $pilihan->id]);
+        $this->assertDatabaseMissing('hasil_tes', ['id' => $hasil->id]);
+        $this->assertDatabaseMissing('hasil_tes_detail', ['id' => $detail->id]);
+        $this->assertDatabaseMissing('rekomendasi_karirs', ['id' => $rekomendasi->id]);
+    }
     public function test_admin_can_manage_soal_and_likert_pilihan_with_matching_option(): void
     {
         $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);

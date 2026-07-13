@@ -47,6 +47,10 @@ Route::middleware('auth')->group(function () {
         Route::get('tes/buat-lengkap', [\App\Http\Controllers\Admin\TesLengkapController::class, 'create'])->name('tes.buat-lengkap');
         Route::post('tes/buat-lengkap', [\App\Http\Controllers\Admin\TesLengkapController::class, 'store'])->name('tes.buat-lengkap.store');
 
+        Route::get('hasil-tes', [TesController::class, 'hasilTes'])->name('tes.hasil-tes');
+        Route::get('hasil-tes/{hasilTes}', [TesController::class, 'showHasilTes'])->name('tes.hasil-tes.show');
+        Route::get('rekomendasi-karir', [TesController::class, 'rekomendasiKarir'])->name('tes.rekomendasi-karir');
+
         Route::resource('tes', TesController::class)->except('show');
         Route::resource('soals', SoalController::class)->except('show');
         Route::resource('pilihan-jawabans', PilihanJawabanController::class)->except('show');

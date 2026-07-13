@@ -11,12 +11,10 @@ class Soal extends Model
     public $timestamps = false;
 
     protected $fillable = ['tes_id', 'kriteria_id', 'pertanyaan', 'urutan'];
-
     public function tes(): BelongsTo
     {
-        return $this->belongsTo(Tes::class);
+        return $this->belongsTo(Tes::class)->withTrashed();
     }
-
     public function kriteria(): BelongsTo
     {
         return $this->belongsTo(Kriteria::class);
@@ -25,5 +23,12 @@ class Soal extends Model
     public function pilihanJawabans(): HasMany
     {
         return $this->hasMany(PilihanJawaban::class);
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($soal) {
+            $soal->pilihanJawabans()->delete();
+        });
     }
 }

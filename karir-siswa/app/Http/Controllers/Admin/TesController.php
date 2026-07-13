@@ -55,4 +55,46 @@ class TesController extends Controller
 
         return to_route('admin.tes.index')->with('success', 'Tes berhasil dihapus.');
     }
+
+    public function hasilTes(Request $request): View
+    {
+        $search = trim((string) $request->string('q'));
+        $hasilTes = \App\Models\HasilTes::with(['siswa.user', 'tes', 'rekomendasis.karir'])
+            ->when($search !== '', function ($query) use ($search) {
+                $query->whereHas('siswa.user', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                })->orWhereHas('tes', function ($q) use ($search) {
+                    $q->where('nama_tes', 'like', "%{$search}%");
+                });
+            })
+            ->latest('tanggal_tes')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('admin.tes.hasil_tes', compact('hasilTes', 'search'));
+    }
+
+    public function rekomendasiKarir(Request $request): View
+    {
+        $search = trim((string) $request->string('q'));
+        $rekomendasis = \App\Models\RekomendasiKarir::with(['hasilTes.siswa.user', 'karir'])
+            ->when($search !== '', function ($query) use ($search) {
+                $query->whereHas('hasilTes.siswa.user', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                })->orWhereHas('karir', function ($q) use ($search) {
+                    $q->where('nama_karir', 'like', "%{$search}%");
+                });
+            })
+            ->latest('id')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('admin.tes.rekomendasi_karir', compact('rekomendasis', 'search'));
+    }
+
+    public function showHasilTes(\App\Models\HasilTes $hasilTes): View
+    {
+        $hasilTes->load(['tes', 'siswa.user', 'details.kriteria', 'rekomendasis.karir']);
+        return view('admin.tes.show_hasil', compact('hasilTes'));
+    }
 }

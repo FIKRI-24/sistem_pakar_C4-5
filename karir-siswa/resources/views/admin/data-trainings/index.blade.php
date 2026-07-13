@@ -2,7 +2,6 @@
 
 @section('content')
     <style>
-        /* Pagination Laravel uses Tailwind classes, while this layout uses local CSS. */
         .data-training-pagination svg {
             display: block;
             width: 20px;
@@ -10,9 +9,117 @@
         }
     </style>
 
-    <section class="panel"><div class="panel-body"><div class="toolbar"><div><p class="role-badge">Fase 2</p><h1>Data Training C4.5</h1></div><div class="inline-actions"><a class="button secondary" href="{{ route('admin.data-trainings.import.form') }}">Import CSV/Excel</a><a class="button" href="{{ route('admin.data-trainings.create') }}">Tambah Data</a></div></div>
-        @if (session('success')) <div class="notice">{{ session('success') }}</div> @endif
-        <form class="toolbar" method="GET"><input name="q" value="{{ $search }}" placeholder="Cari sumber atau karir" style="min-height:42px;min-width:280px;padding:0 12px;"><button class="button secondary">Cari</button></form>
-        <div class="table-wrap"><table><thead><tr><th>Karir</th><th>Atribut</th><th>Sumber</th><th>Aksi</th></tr></thead><tbody>@forelse($dataTrainings as $training)<tr><td>{{ $training->labelKarir->nama_karir }}</td><td>@foreach($training->atributs as $atribut)<div><span class="muted">{{ $atribut->kriteria->nama_kriteria }}:</span> {{ $atribut->nilai_kategorik ?? $atribut->nilai_numerik }}</div>@endforeach</td><td>{{ $training->sumber ?: '-' }}</td><td><div class="inline-actions"><a class="button secondary" href="{{ route('admin.data-trainings.edit', $training) }}">Ubah</a><form method="POST" action="{{ route('admin.data-trainings.destroy', $training) }}" onsubmit="return confirm('Hapus data training ini?')">@csrf @method('DELETE')<button class="button danger">Hapus</button></form></div></td></tr>@empty<tr><td colspan="4" class="muted">Belum ada data training.</td></tr>@endforelse</tbody></table></div><div class="data-training-pagination" style="margin-top:20px">{{ $dataTrainings->links() }}</div>
-    </div></section>
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+        <!-- Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div>
+                <h1 style="margin: 0 0 4px; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.025em; color: #0f172a;">Data Training C4.5</h1>
+                <p style="margin: 0; font-size: 0.95rem; color: #64748b;">Kelola kumpulan data latih untuk pemodelan pohon keputusan sistem pakar rekomendasi karir.</p>
+            </div>
+            <div style="display: inline-flex; gap: 10px; align-items: center;">
+                <a href="{{ route('admin.data-trainings.import.form') }}" style="background-color: #ffffff; border: 1px solid #cbd5e1; color: #334155; padding: 10px 16px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                    Import CSV/Excel
+                </a>
+                <a href="{{ route('admin.data-trainings.create') }}" style="background-color: #0f766e; color: #ffffff; padding: 10px 18px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 6px -1px rgba(15, 118, 110, 0.15); transition: all 0.2s;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Tambah Data
+                </a>
+            </div>
+        </div>
+
+        @if (session('success'))
+            <div style="background-color: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 12px 16px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 8px;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <!-- Card Container -->
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); overflow: hidden; display: flex; flex-direction: column;">
+            <!-- Filter Toolbar -->
+            <div style="padding: 16px 20px; border-bottom: 1px solid #f1f5f9; background: #f8fafc; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                <form method="GET" action="" style="display: flex; gap: 8px; width: 100%; max-width: 420px; align-items: center; position: relative;">
+                    <div style="position: relative; flex: 1;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); pointer-events: none;">
+                            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                        <input name="q" value="{{ $search }}" placeholder="Cari sumber atau label karir..." style="width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 12px 8px 36px; font-size: 0.875rem; min-height: 38px; outline: none; box-sizing: border-box;">
+                    </div>
+                    <button type="submit" style="background-color: #0ea5e9; color: #ffffff; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; min-height: 38px; display: inline-flex; align-items: center; justify-content: center; transition: all 0.2s;">
+                        Cari
+                    </button>
+                    @if($search)
+                        <a href="{{ route('admin.data-trainings.index') }}" style="color: #64748b; font-size: 0.85rem; font-weight: 600; text-decoration: none; padding-left: 4px;">Reset</a>
+                    @endif
+                </form>
+            </div>
+
+            <!-- Table View -->
+            <div style="overflow-x: auto; width: 100%;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; min-width: 800px;">
+                    <thead>
+                        <tr style="background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
+                            <th style="padding: 14px 20px; font-weight: 750; color: #475569; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; width: 25%;">Klasifikasi Karir</th>
+                            <th style="padding: 14px 20px; font-weight: 750; color: #475569; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; width: 45%;">Nilai Atribut Pelatihan</th>
+                            <th style="padding: 14px 20px; font-weight: 750; color: #475569; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; width: 15%;">Sumber Data</th>
+                            <th style="padding: 14px 20px; font-weight: 750; color: #475569; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; width: 15%; text-align: right;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody style="background: #ffffff;">
+                        @forelse ($dataTrainings as $training)
+                            <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s;">
+                                <td style="padding: 16px 20px; vertical-align: top;">
+                                    <strong style="font-size: 0.95rem; font-weight: 750; color: #0f172a; display: block; margin-bottom: 4px;">
+                                        {{ $training->labelKarir->nama_karir }}
+                                    </strong>
+                                </td>
+                                <td style="padding: 16px 20px; vertical-align: top;">
+                                    <div style="display: flex; flex-direction: column; gap: 4px; font-size: 0.85rem;">
+                                        @foreach($training->atributs as $atribut)
+                                            <div>
+                                                <strong style="color: #64748b; font-weight: 600;">{{ $atribut->kriteria->nama_kriteria }}:</strong>
+                                                <span style="color: #0f172a; font-weight: 700;">{{ $atribut->nilai_kategorik ?? $atribut->nilai_numerik }}</span>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </td>
+                                <td style="padding: 16px 20px; vertical-align: middle; color: #475569; font-weight: 600;">
+                                    {{ $training->sumber ?: '-' }}
+                                </td>
+                                <td style="padding: 16px 20px; vertical-align: middle; text-align: right;">
+                                    <div style="display: inline-flex; gap: 8px; justify-content: flex-end; align-items: center;">
+                                        <a href="{{ route('admin.data-trainings.edit', $training) }}" style="background-color: #f1f5f9; border: 1px solid #cbd5e1; color: #334155; padding: 6px 12px; border-radius: 6px; font-weight: 700; font-size: 0.8rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+                                            Ubah
+                                        </a>
+                                        <form method="POST" action="{{ route('admin.data-trainings.destroy', $training) }}" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data training ini?')" style="margin: 0; display: inline-block;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" style="background-color: #fee2e2; border: 1px solid #fecaca; color: #991b1b; padding: 6px 12px; border-radius: 6px; font-weight: 700; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; transition: all 0.2s; border: 1px solid #fecaca;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                                                Hapus
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" style="padding: 32px 20px; text-align: center; color: #64748b; font-style: italic;">
+                                    Belum ada data training.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            @if($dataTrainings->hasPages())
+                <div style="padding: 16px 20px; border-top: 1px solid #f1f5f9; background: #f8fafc; display: flex; justify-content: center;" class="data-training-pagination">
+                    {{ $dataTrainings->links() }}
+                </div>
+            @endif
+        </div>
+    </div>
 @endsection

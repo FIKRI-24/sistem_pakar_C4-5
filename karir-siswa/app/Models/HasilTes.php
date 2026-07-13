@@ -21,12 +21,10 @@ class HasilTes extends Model
     {
         return $this->belongsTo(Siswa::class);
     }
-
     public function tes(): BelongsTo
     {
-        return $this->belongsTo(Tes::class);
+        return $this->belongsTo(Tes::class)->withTrashed();
     }
-
     public function details(): HasMany
     {
         return $this->hasMany(HasilTesDetail::class);
@@ -35,5 +33,13 @@ class HasilTes extends Model
     public function rekomendasis(): HasMany
     {
         return $this->hasMany(RekomendasiKarir::class);
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($hasilTes) {
+            $hasilTes->details()->delete();
+            $hasilTes->rekomendasis()->delete();
+        });
     }
 }

@@ -111,33 +111,6 @@
             cursor: pointer;
         }
 
-        .demo-box {
-            margin-top: 24px;
-            padding: 16px;
-            background-color: #f8fafc;
-            border: 1px dashed #e2e8f0;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            color: #475569;
-        }
-
-        .demo-title {
-            font-weight: 700;
-            color: #334155;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .demo-badge {
-            background-color: #e2e8f0;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 0.8rem;
-            color: #1e293b;
-        }
 
         .error-message {
             color: #dc2626;
@@ -165,7 +138,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-graduation-cap"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
             </div>
             <h1>Login Pengguna</h1>
-            <p>Sistem Pakar Rekomendasi Karir Siswa</p>
+            <p>Sistem Pakar Rekomendasi Karir Siswa SMK Lubuk Sari Beganti</p>
         </div>
 
         <div class="login-body">
@@ -196,17 +169,7 @@
                 <button class="login-button" type="submit">Masuk ke Sistem</button>
             </form>
 
-            <div class="demo-box">
-                <div class="demo-title">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-                    Informasi Akun Demo (Password: <span style="font-family: monospace;">password</span>)
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 8px;">
-                    <div>• Admin: <span class="demo-badge">admin_sistem</span></div>
-                    <div>• Guru BK: <span class="demo-badge">guru_bk</span></div>
-                    <div>• Siswa: <span class="demo-badge">siswa_demo</span></div>
-                </div>
-            </div>
+
         </div>
     </div>
 @endsection

@@ -85,8 +85,8 @@ class EndToEndFase1To3Test extends TestCase
 
         $consultationPage = $this->get(route('siswa.konsultasi.show', $tes));
         $consultationPage->assertOk()
-            ->assertSee('Saya lebih tertarik pada kegiatan yang melibatkan...')
-            ->assertSee('Investigative')
+            ->assertSee('Merakit komputer, memasang jaringan kabel LAN, atau merawat perangkat keras (TKJ).')
+            ->assertSee('Sangat Suka')
             ->assertDontSee('Pilihan jawaban belum tersedia untuk soal ini.');
 
         $tes->load(['soals.kriteria', 'soals.pilihanJawabans']);
@@ -108,8 +108,13 @@ class EndToEndFase1To3Test extends TestCase
         $answers = [];
         foreach ($categoricalSoals as $soal) {
             $desiredLabel = $desiredLabels[$soal->kriteria->nama_kriteria];
-            $choice = $soal->pilihanJawabans->firstWhere('pilihan', $desiredLabel);
-            $this->assertNotNull($choice, "Choice {$desiredLabel} must exist for soal {$soal->id}.");
+            $mappedOptionLabel = $soal->pilihanJawabans->first()?->kriteriaOpsi?->label;
+            if ($mappedOptionLabel === $desiredLabel) {
+                $choice = $soal->pilihanJawabans->firstWhere('skor', 5.0);
+            } else {
+                $choice = $soal->pilihanJawabans->firstWhere('skor', 1.0);
+            }
+            $this->assertNotNull($choice, "Choice must exist for soal {$soal->id}.");
             $answers[$soal->id] = $choice->id;
         }
 

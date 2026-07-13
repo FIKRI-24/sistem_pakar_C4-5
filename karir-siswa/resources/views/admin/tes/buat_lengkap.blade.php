@@ -60,12 +60,18 @@
 
         <!-- Daftar Soal -->
         <div style="margin-bottom:28px">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
                 <h2 style="font-size:1.3rem; font-weight:750; color:#1e293b; margin:0;">Daftar Pertanyaan & Pilihan Jawaban</h2>
-                <button type="button" class="button" id="add-soal-btn" style="background-color:#0f766e;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                    Tambah Soal Manual
-                </button>
+                <div style="display:flex; gap:8px;">
+                    <button type="button" class="button" id="open-bank-btn" style="background-color:#0284c7;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        Ambil dari Bank Soal
+                    </button>
+                    <button type="button" class="button" id="add-soal-btn" style="background-color:#0f766e;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Tambah Soal Manual
+                    </button>
+                </div>
             </div>
 
             <!-- Generator Jumlah Soal -->
@@ -77,6 +83,60 @@
                 <button type="button" class="button secondary" id="generate-soal-btn" style="min-height:42px; background:#f8fafc; font-weight:700; border: 1px solid #cbd5e1;">
                     Generate Kolom Soal
                 </button>
+            </div>
+
+            <!-- Kamus & Panduan Opsi Kategori (RIASEC, DAT, DISC) -->
+            <div class="panel" style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:12px; margin-bottom:24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
+                <div class="panel-body" style="padding:16px 20px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="togglePanduan()">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                            <h3 style="margin:0; font-size:1rem; font-weight:700; color:#0f766e;">Kamus & Panduan Opsi Kategori (RIASEC, DAT, DISC)</h3>
+                        </div>
+                        <span id="toggle-icon-panduan" style="font-weight:700; color:#0f766e; font-size:0.85rem;">[ Tampilkan Panduan ]</span>
+                    </div>
+                    
+                    <div id="panduan-content" style="display:none; margin-top:16px; border-top:1px solid #cbd5e1; padding-top:16px; font-size:0.85rem; line-height:1.6; color:#334155;">
+                        <p style="margin-top:0; margin-bottom:14px; font-style:italic; color:#64748b;">Gunakan kamus ini sebagai panduan untuk memetakan setiap pilihan jawaban ke sub-kategori psikologi yang sesuai. Hal ini memastikan algoritma C4.5 dapat melakukan klasifikasi karir secara tepat.</p>
+                        
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:20px;">
+                            <!-- MINAT (RIASEC) -->
+                            <div style="background:#ffffff; padding:16px; border:1px solid #e2e8f0; border-radius:8px;">
+                                <h4 style="margin-top:0; margin-bottom:10px; color:#0f766e; border-bottom:2px solid #0f766e; padding-bottom:6px; font-weight:700; font-size:0.9rem;">Minat (RIASEC / Holland Code)</h4>
+                                <ul style="padding-left:16px; margin:0; display:flex; flex-direction:column; gap:8px; list-style-type:disc;">
+                                    <li><strong>Realistic (Realistis):</strong> Suka kerja praktis dengan benda, alat, mesin, atau tanaman/hewan (misal: instalasi kabel, pertukangan, hidroponik).</li>
+                                    <li><strong>Investigative (Penyelidikan):</strong> Suka analisis, observasi, riset ilmiah, troubleshooting eror, dan logika matematika.</li>
+                                    <li><strong>Artistic (Artistik):</strong> Suka seni, desain grafis/UI, menulis kreatif, musik, dan ekspresi diri bebas.</li>
+                                    <li><strong>Social (Sosial):</strong> Suka mengajar, membantu, konseling, atau melatih teman/kelompok.</li>
+                                    <li><strong>Enterprising (Giat):</strong> Suka memimpin, bisnis, wirausaha, promosi, negosiasi, dan membujuk orang lain.</li>
+                                    <li><strong>Conventional (Konvensional):</strong> Suka keteraturan, administrasi kantor, pembukuan uang, pencatatan data/arsip, dan kerapian.</li>
+                                </ul>
+                            </div>
+
+                            <!-- BAKAT (DAT) -->
+                            <div style="background:#ffffff; padding:16px; border:1px solid #e2e8f0; border-radius:8px;">
+                                <h4 style="margin-top:0; margin-bottom:10px; color:#0f766e; border-bottom:2px solid #0f766e; padding-bottom:6px; font-weight:700; font-size:0.9rem;">Bakat (DAT - Differential Aptitude)</h4>
+                                <ul style="padding-left:16px; margin:0; display:flex; flex-direction:column; gap:8px; list-style-type:disc;">
+                                    <li><strong>Verbal:</strong> Kemampuan memahami/menganalisis kalimat panjang, menulis rapi, dan presentasi/debat lisan.</li>
+                                    <li><strong>Numerik/Logika:</strong> Kemampuan berhitung cepat, membaca grafik/tabel keuangan, dan memecahkan soal logika runut.</li>
+                                    <li><strong>Spasial/Visual:</strong> Kemampuan membayangkan objek 3D di kepala, menggambar peta arah, arsitektur, dan sketsa visual.</li>
+                                    <li><strong>Motorik/Praktikal:</strong> Kemampuan koordinasi tangan-mata, memotong/merakit benda presisi, stamina fisik di lapangan.</li>
+                                </ul>
+                            </div>
+
+                            <!-- KEPRIBADIAN (DISC) -->
+                            <div style="background:#ffffff; padding:16px; border:1px solid #e2e8f0; border-radius:8px;">
+                                <h4 style="margin-top:0; margin-bottom:10px; color:#0f766e; border-bottom:2px solid #0f766e; padding-bottom:6px; font-weight:700; font-size:0.9rem;">Kepribadian Kerja (DISC)</h4>
+                                <ul style="padding-left:16px; margin:0; display:flex; flex-direction:column; gap:8px; list-style-type:disc;">
+                                    <li><strong>Dominance (Dominan):</strong> Tegas, fokus pada target cepat, menyukai tantangan/kompetisi, siap mengambil keputusan berisiko.</li>
+                                    <li><strong>Influence (Intuitif/Sosial):</strong> Antusias, ramah, persuasif, suka ngobrol/sosialisasi, pandai memotivasi tim.</li>
+                                    <li><strong>Steadiness (Stabil/Tenang):</strong> Sabar, setia kawan, pendengar baik, menyukai ritme stabil, menghindari konflik.</li>
+                                    <li><strong>Compliance (Patuh/Sistematis):</strong> Teliti memeriksa detail agar bebas dari salah ejaan/angka, taat aturan, bekerja terstruktur.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="soals-container" style="display:flex; flex-direction:column; gap:24px;">
@@ -110,8 +170,7 @@
                     <label>Teks Pertanyaan *</label>
                     <textarea name="soals[{soal_index}][pertanyaan]" required placeholder="Masukkan butir pertanyaan psikotes..." style="min-height:70px;"></textarea>
                 </div>
-
-                <div style="display:grid; grid-template-columns: 2fr 1fr; gap:16px; margin-bottom:20px;">
+                <div style="margin-bottom:20px;">
                     <div class="field">
                         <label>Kriteria Penilai *</label>
                         <select name="soals[{soal_index}][kriteria_id]" required class="kriteria-select">
@@ -121,13 +180,8 @@
                             @endforeach
                         </select>
                     </div>
-
-                    <div class="field">
-                        <label>Urutan Tampil</label>
-                        <input name="soals[{soal_index}][urutan]" type="number" min="1" placeholder="Opsional">
-                    </div>
+                    <input name="soals[{soal_index}][urutan]" type="hidden" class="soal-urutan-input">
                 </div>
-
                 <!-- Choices Container (only for Categorical) -->
                 <div class="choices-section-container" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:16px; display:none;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
@@ -173,6 +227,18 @@
 
     <!-- JS Logic -->
     <script>
+        function togglePanduan() {
+            const content = document.getElementById('panduan-content');
+            const icon = document.getElementById('toggle-icon-panduan');
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                icon.textContent = '[ Sembunyikan Panduan ]';
+            } else {
+                content.style.display = 'none';
+                icon.textContent = '[ Tampilkan Panduan ]';
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             // Criteria and Options JSON data
             const masterKriterias = @json($kriterias);
@@ -339,14 +405,19 @@
                 });
             }
 
-            // Renumber all question display headings
             function renumberSoals() {
-                const labels = soalsContainer.querySelectorAll('.soal-number-label');
-                labels.forEach(function (label, idx) {
-                    label.textContent = `Pertanyaan #${idx + 1}`;
+                const blocks = soalsContainer.querySelectorAll('.soal-block');
+                blocks.forEach(function (block, idx) {
+                    const label = block.querySelector('.soal-number-label');
+                    if (label) {
+                        label.textContent = `Pertanyaan #${idx + 1}`;
+                    }
+                    const urutanInput = block.querySelector('input[name*="[urutan]"]');
+                    if (urutanInput) {
+                        urutanInput.value = idx + 1;
+                    }
                 });
             }
-
             // Trigger click on add question button
             addSoalBtn.addEventListener('click', function () {
                 addSoal();
@@ -386,6 +457,301 @@
                 // Add 1 default empty question on fresh load
                 addSoal();
             }
+            // === BANK SOAL INTERACTIVE LOGIC ===
+            const bankSoalData = @json($bankSoals);
+
+            let activeBankTab = 'Minat';
+            let selectedBankQuestions = new Set();
+
+            const bankModal = document.getElementById('bank-soal-modal');
+            const openBankBtn = document.getElementById('open-bank-btn');
+            const bankSoalsList = document.getElementById('bank-soals-list');
+            const selectAllBankBtn = document.getElementById('select-all-bank-btn');
+            const importBankSoalBtn = document.getElementById('import-bank-soal-btn');
+            const bankSoalSearch = document.getElementById('bank-soal-search');
+
+            if (bankSoalSearch) {
+                bankSoalSearch.addEventListener('input', function() {
+                    renderBankQuestions();
+                });
+            }
+
+            // Open Modal
+            openBankBtn.addEventListener('click', function() {
+                bankModal.style.display = 'flex';
+                selectedBankQuestions.clear();
+                if (bankSoalSearch) {
+                    bankSoalSearch.value = '';
+                }
+                updateImportBtnCount();
+                switchBankTab('Minat');
+            });
+
+            // Close Modal
+            window.closeBankModal = function() {
+                bankModal.style.display = 'none';
+            };
+
+            // Switch Tab
+            window.switchBankTab = function(tabName) {
+                activeBankTab = tabName;
+                
+                // Toggle active style in tabs
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    if (btn.getAttribute('data-tab') === tabName) {
+                        btn.classList.add('active');
+                        btn.style.color = '#0f766e';
+                        btn.style.borderBottomColor = '#0f766e';
+                    } else {
+                        btn.classList.remove('active');
+                        btn.style.color = '#64748b';
+                        btn.style.borderBottomColor = 'transparent';
+                    }
+                });
+
+                renderBankQuestions();
+            };
+
+            // Render Questions under Active Tab
+            function renderBankQuestions() {
+                bankSoalsList.innerHTML = '';
+                
+                const query = (document.getElementById('bank-soal-search')?.value || '').toLowerCase().trim();
+                
+                const filtered = bankSoalData.filter(q => {
+                    const matchTab = q.kriteriaName === activeBankTab;
+                    const matchQuery = !query || 
+                                       q.pertanyaan.toLowerCase().includes(query) || 
+                                       q.tag.toLowerCase().includes(query) ||
+                                       (q.opsiLabel && q.opsiLabel.toLowerCase().includes(query));
+                    return matchTab && matchQuery;
+                });
+                
+                if (filtered.length === 0) {
+                    bankSoalsList.innerHTML = '<p style="color:#64748b; font-style:italic; text-align:center; padding:20px;">Tidak ada soal yang cocok dengan pencarian Anda.</p>';
+                    return;
+                }
+
+                filtered.forEach((q, idx) => {
+                    const globalIndex = bankSoalData.findIndex(item => item.pertanyaan === q.pertanyaan);
+                    const isChecked = selectedBankQuestions.has(globalIndex);
+                    
+                    // Determine badge style
+                    let badgeBg = '#f1f5f9';
+                    let badgeColor = '#475569';
+                    if (q.tag === 'TKJ') {
+                        badgeBg = '#e0f2fe';
+                        badgeColor = '#0369a1';
+                    } else if (q.tag === 'AKL') {
+                        badgeBg = '#fef3c7';
+                        badgeColor = '#b45309';
+                    } else if (q.tag === 'ATPH') {
+                        badgeBg = '#dcfce7';
+                        badgeColor = '#15803d';
+                    }
+                    
+                    const itemDiv = document.createElement('label');
+                    itemDiv.style.display = 'flex';
+                    itemDiv.style.alignItems = 'flex-start';
+                    itemDiv.style.gap = '12px';
+                    itemDiv.style.padding = '12px 16px';
+                    itemDiv.style.border = '1px solid #e2e8f0';
+                    itemDiv.style.borderRadius = '8px';
+                    itemDiv.style.cursor = 'pointer';
+                    itemDiv.style.transition = 'all 0.15s';
+                    itemDiv.style.background = isChecked ? '#f0fdfa' : '#ffffff';
+                    if (isChecked) {
+                        itemDiv.style.borderColor = '#99f6e4';
+                    }
+
+                    itemDiv.innerHTML = `
+                        <input type="checkbox" onchange="toggleSelectBankQuestion(${globalIndex}, this)" ${isChecked ? 'checked' : ''} style="margin-top:4px; cursor:pointer; width:16px; height:16px;">
+                        <div style="flex:1;">
+                            <span style="font-size:0.875rem; color:#334155; font-weight:600;">${q.pertanyaan}</span>
+                            <div style="margin-top:6px; display:flex; gap:6px; align-items:center;">
+                                <span style="font-size:0.7rem; font-weight:700; background:${badgeBg}; color:${badgeColor}; padding:2px 8px; border-radius:12px;">${q.tag}</span>
+                                ${q.opsiLabel ? '<span style="font-size:0.7rem; font-weight:700; background:#f3e8ff; color:#6b21a8; padding:2px 8px; border-radius:12px;">Opsi: ' + q.opsiLabel + '</span>' : ''}
+                            </div>
+                        </div>
+                    `;
+
+                    bankSoalsList.appendChild(itemDiv);
+                });
+
+                updateSelectAllBtnState();
+            }
+
+            // Toggle Single Checkbox Selection
+            window.toggleSelectBankQuestion = function(globalIndex, checkboxEl) {
+                const labelEl = checkboxEl.closest('label');
+                if (checkboxEl.checked) {
+                    selectedBankQuestions.add(globalIndex);
+                    if (labelEl) {
+                        labelEl.style.background = '#f0fdfa';
+                        labelEl.style.borderColor = '#99f6e4';
+                    }
+                } else {
+                    selectedBankQuestions.delete(globalIndex);
+                    if (labelEl) {
+                        labelEl.style.background = '#ffffff';
+                        labelEl.style.borderColor = '#e2e8f0';
+                    }
+                }
+                updateImportBtnCount();
+                updateSelectAllBtnState();
+            };
+
+            // Select All / Deselect All under current tab
+            window.toggleSelectAllBankSoal = function() {
+                const filteredIndices = bankSoalData
+                    .map((q, idx) => ({ q, idx }))
+                    .filter(item => item.q.kriteriaName === activeBankTab)
+                    .map(item => item.idx);
+                
+                const allSelected = filteredIndices.every(idx => selectedBankQuestions.has(idx));
+                
+                if (allSelected) {
+                    // Deselect all under active tab
+                    filteredIndices.forEach(idx => selectedBankQuestions.delete(idx));
+                } else {
+                    // Select all under active tab
+                    filteredIndices.forEach(idx => selectedBankQuestions.add(idx));
+                }
+
+                renderBankQuestions();
+                updateImportBtnCount();
+            };
+
+            // Update Select All Button Text
+            function updateSelectAllBtnState() {
+                const filteredIndices = bankSoalData
+                    .map((q, idx) => ({ q, idx }))
+                    .filter(item => item.q.kriteriaName === activeBankTab)
+                    .map(item => item.idx);
+                
+                const allSelected = filteredIndices.length > 0 && filteredIndices.every(idx => selectedBankQuestions.has(idx));
+                selectAllBankBtn.textContent = allSelected ? 'Hapus Semua Pilihan' : 'Pilih Semua Kategori Ini';
+            }
+
+            // Update Import Button Text with count
+            function updateImportBtnCount() {
+                importBankSoalBtn.textContent = `Masukkan ${selectedBankQuestions.size} Soal Terpilih`;
+                importBankSoalBtn.disabled = selectedBankQuestions.size === 0;
+                importBankSoalBtn.style.opacity = selectedBankQuestions.size === 0 ? '0.5' : '1';
+            }
+
+            // Helper to find Opsi ID on client-side
+            function findOpsiId(kriteriaName, label) {
+                if (!label) return null;
+                const kriteria = masterKriterias.find(k => k.nama_kriteria === kriteriaName);
+                if (kriteria && kriteria.opsis) {
+                    const opsi = kriteria.opsis.find(o => o.label === label);
+                    return opsi ? opsi.id : null;
+                }
+                return null;
+            }
+
+            // Import Selected Questions
+            window.importSelectedBankSoal = function() {
+                if (selectedBankQuestions.size === 0) return;
+                
+                // Check if we should clear default empty questions
+                const hasEmptyQuestions = soalsContainer.children.length === 1 && 
+                    soalsContainer.querySelector('textarea').value.trim() === '';
+                
+                if (hasEmptyQuestions) {
+                    soalsContainer.innerHTML = '';
+                    soalCounter = 0;
+                }
+
+                selectedBankQuestions.forEach(globalIndex => {
+                    const q = bankSoalData[globalIndex];
+                    const kriteria = masterKriterias.find(k => k.nama_kriteria === q.kriteriaName);
+                    if (!kriteria) return;
+
+                    const opsiId = findOpsiId(q.kriteriaName, q.opsiLabel);
+                    
+                    let choices = [];
+                    if (q.kriteriaName === 'Minat') {
+                        choices = [
+                            { pilihan: 'Sangat Suka', skor: 5, kriteria_opsi_id: opsiId },
+                            { pilihan: 'Suka', skor: 4, kriteria_opsi_id: opsiId },
+                            { pilihan: 'Biasa Saja', skor: 3, kriteria_opsi_id: opsiId },
+                            { pilihan: 'Kurang Suka', skor: 2, kriteria_opsi_id: opsiId },
+                            { pilihan: 'Tidak Suka', skor: 1, kriteria_opsi_id: opsiId }
+                        ];
+                    } else if (q.kriteriaName === 'Bakat') {
+                        choices = [
+                            { pilihan: 'Sangat Mampu', skor: 5, kriteria_opsi_id: opsiId },
+                            { pilihan: 'Mampu', skor: 4, kriteria_opsi_id: opsiId },
+                            { pilihan: 'Cukup Mampu', skor: 3, kriteria_opsi_id: opsiId },
+                            { pilihan: 'Kurang Mampu', skor: 2, kriteria_opsi_id: opsiId },
+                            { pilihan: 'Tidak Mampu', skor: 1, kriteria_opsi_id: opsiId }
+                        ];
+                    } else if (q.kriteriaName === 'Kepribadian') {
+                        choices = [
+                            { pilihan: 'Sangat Setuju', skor: 5, kriteria_opsi_id: opsiId },
+                            { pilihan: 'Setuju', skor: 4, kriteria_opsi_id: opsiId },
+                            { pilihan: 'Netral', skor: 3, kriteria_opsi_id: opsiId },
+                            { pilihan: 'Kurang Setuju', skor: 2, kriteria_opsi_id: opsiId },
+                            { pilihan: 'Tidak Setuju', skor: 1, kriteria_opsi_id: opsiId }
+                        ];
+                    }
+
+                    const soalData = {
+                        pertanyaan: q.pertanyaan,
+                        kriteria_id: kriteria.id,
+                        urutan: '',
+                        pilihans: choices
+                    };
+
+                    addSoal(soalData);
+                });
+
+                closeBankModal();
+            };
         });
     </script>
+
+    <!-- Modal Bank Soal -->
+    <div id="bank-soal-modal" style="display:none; position:fixed; inset:0; background:rgba(15, 23, 42, 0.6); z-index:9999; backdrop-filter:blur(4px); justify-content:center; align-items:center; padding:16px;">
+        <div style="background:#ffffff; width:min(100% - 32px, 860px); max-height:85vh; border-radius:16px; display:flex; flex-direction:column; box-shadow:0 25px 50px -12px rgba(0, 0, 0, 0.25); overflow:hidden;">
+            <!-- Header -->
+            <div style="padding:20px 24px; border-bottom:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center; background:#f8fafc;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    <h3 style="margin:0; font-size:1.15rem; font-weight:800; color:#0f172a;">Ambil dari Bank Soal Standar (3 Jurusan)</h3>
+                </div>
+                <button type="button" onclick="closeBankModal()" style="background:none; border:none; cursor:pointer; color:#94a3b8; font-size:1.5rem; line-height:1; font-weight:700;">&times;</button>
+            </div>
+
+            <!-- Search Bar -->
+            <div style="padding:12px 24px; border-bottom:1px solid #e2e8f0; background:#ffffff; display:flex; gap:10px; align-items:center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="bank-soal-search" placeholder="Cari soal berdasarkan kata kunci (misal: merakit, debit, kebun)..." style="flex:1; border:1px solid #cbd5e1; border-radius:8px; padding:8px 12px; font-size:0.85rem; min-height:36px; outline:none; box-sizing:border-box; width:100%;">
+            </div>
+
+            <!-- Tabs Navigation -->
+            <div style="display:flex; background:#f1f5f9; border-bottom:1px solid #e2e8f0; padding:0 16px; overflow-x:auto;">
+                <button type="button" class="tab-btn active" onclick="switchBankTab('Minat')" data-tab="Minat" style="border:none; background:none; padding:14px 20px; font-weight:700; font-size:0.875rem; color:#0f766e; border-bottom:3px solid #0f766e; cursor:pointer; transition:all 0.2s; white-space:nowrap;">Minat (RIASEC)</button>
+                <button type="button" class="tab-btn" onclick="switchBankTab('Bakat')" data-tab="Bakat" style="border:none; background:none; padding:14px 20px; font-weight:600; font-size:0.875rem; color:#64748b; border-bottom:3px solid transparent; cursor:pointer; transition:all 0.2s; white-space:nowrap;">Bakat (DAT)</button>
+                <button type="button" class="tab-btn" onclick="switchBankTab('Kepribadian')" data-tab="Kepribadian" style="border:none; background:none; padding:14px 20px; font-weight:600; font-size:0.875rem; color:#64748b; border-bottom:3px solid transparent; cursor:pointer; transition:all 0.2s; white-space:nowrap;">Kepribadian (DISC)</button>
+                <button type="button" class="tab-btn" onclick="switchBankTab('Nilai Akademik')" data-tab="Nilai Akademik" style="border:none; background:none; padding:14px 20px; font-weight:600; font-size:0.875rem; color:#64748b; border-bottom:3px solid transparent; cursor:pointer; transition:all 0.2s; white-space:nowrap;">Nilai Akademik (Numerik)</button>
+            </div>
+
+            <!-- Content List -->
+            <div id="bank-soals-list" style="padding:24px; overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:12px; background:#ffffff; min-height:250px;">
+                <!-- Dynamically loaded questions based on selected tab -->
+            </div>
+
+            <!-- Footer -->
+            <div style="padding:16px 24px; border-top:1px solid #e2e8f0; background:#f8fafc; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                <button type="button" class="button secondary" onclick="toggleSelectAllBankSoal()" id="select-all-bank-btn" style="min-height:36px; padding:0 14px; font-size:0.85rem; font-weight:700;">Pilih Semua Kategori Ini</button>
+                <div style="display:flex; gap:10px;">
+                    <button type="button" class="button secondary" onclick="closeBankModal()" style="min-height:40px;">Batal</button>
+                    <button type="button" class="button" onclick="importSelectedBankSoal()" id="import-bank-soal-btn" style="background-color:#0284c7; font-weight:700; min-height:40px;">Masukkan 0 Soal Terpilih</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

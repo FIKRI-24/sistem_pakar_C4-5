@@ -25,7 +25,7 @@ class FinalReferenceSeederTest extends TestCase
         $this->assertDatabaseCount('data_training_atributs', 256);
         $this->assertSame(8, DataTraining::query()->distinct('label_karir_id')->count('label_karir_id'));
         $this->assertDatabaseCount('tes', 1);
-        $this->assertDatabaseCount('soals', 7);
-        $this->assertDatabaseCount('pilihan_jawabans', 28);
+        $this->assertDatabaseCount('soals', 41);
+        $this->assertDatabaseCount('pilihan_jawabans', 190);
     }
 }
