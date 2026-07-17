@@ -22,6 +22,29 @@
                 @endif
             </p>
 
+            <!-- Box Petunjuk & Tujuan -->
+            <div style="background-color: #f0fdf4; border: 1px solid #ccfbf1; border-radius: 10px; padding: 20px; margin-bottom: 28px;">
+                <div style="display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                    <div style="background-color: #0f766e; color: #ffffff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0 0 4px; font-size: 1.05rem; font-weight: 750; color: #0f766e;">Petunjuk Pengerjaan & Tujuan Kuesioner</h3>
+                        <p style="margin: 0; font-size: 0.875rem; color: #334155; line-height: 1.45;">
+                            Kuesioner ini bertujuan untuk mengukur minat, bakat, kepribadian, serta nilai akademik Anda. Hasil kuesioner akan dianalisis menggunakan metode sistem pakar pohon keputusan untuk merekomendasikan alternatif karir yang paling sesuai untuk Anda.
+                        </p>
+                    </div>
+                </div>
+                <div style="border-top: 1px dashed #ccfbf1; padding-top: 12px; margin-top: 12px;">
+                    <h4 style="margin: 0 0 8px; font-size: 0.875rem; font-weight: 700; color: #0f766e; text-transform: uppercase; letter-spacing: 0.05em;">Cara Pengisian:</h4>
+                    <ul style="margin: 0; padding-left: 20px; font-size: 0.85rem; color: #475569; line-height: 1.5; display: flex; flex-direction: column; gap: 6px;">
+                        <li><strong>Jawab dengan Jujur:</strong> Bacalah setiap pernyataan secara saksama dan pilih opsi jawaban yang paling mencerminkan diri Anda. Tidak ada jawaban yang benar atau salah.</li>
+                        <li><strong>Input Nilai Akademik:</strong> Pada bagian kriteria "Nilai Akademik", masukkan nilai rata-rata mata pelajaran relevan Anda (misal: <code>85.50</code>). Gunakan titik (.) sebagai pemisah desimal jika diperlukan.</li>
+                        <li><strong>Sekali Pengisian:</strong> Kuesioner ini hanya dapat dikirimkan <strong>satu kali</strong> untuk setiap tes aktif. Pastikan semua jawaban sudah terisi sebelum mengirim.</li>
+                    </ul>
+                </div>
+            </div>
+
             <form method="POST" action="{{ route('siswa.konsultasi.store', $tes) }}">
                 @csrf
                 

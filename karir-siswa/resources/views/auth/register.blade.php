@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Login'])
+@extends('layouts.app', ['title' => 'Daftar Akun Siswa'])
 
 @section('content')
     <style>
@@ -91,27 +91,6 @@
             transform: scale(0.98);
         }
 
-        .remember-me {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 24px;
-            cursor: pointer;
-            user-select: none;
-            font-size: 0.875rem;
-            color: #475569;
-        }
-
-        .remember-me input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-            border: 1px solid #cbd5e1;
-            border-radius: 4px;
-            accent-color: #0f766e;
-            cursor: pointer;
-        }
-
-
         .error-message {
             color: #dc2626;
             font-size: 0.825rem;
@@ -137,17 +116,33 @@
             <div class="school-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-graduation-cap"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
             </div>
-            <h1>Login Pengguna</h1>
-            <p>Sistem Pakar Rekomendasi Karir Siswa SMK Lubuk Sari Beganti</p>
+            <h1>Daftar Akun Siswa</h1>
+            <p>Silakan lengkapi form berikut untuk membuat akun baru</p>
         </div>
 
         <div class="login-body">
-            <form method="POST" action="{{ route('login.store') }}">
+            <form method="POST" action="{{ route('register.store') }}">
                 @csrf
 
                 <div class="form-group">
+                    <label class="form-label" for="name">Nama Lengkap</label>
+                    <input class="form-input" id="name" name="name" type="text" value="{{ old('name') }}" required autofocus placeholder="Masukkan nama lengkap Anda">
+                    @error('name')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="nis">NIS (Nomor Induk Siswa)</label>
+                    <input class="form-input" id="nis" name="nis" type="text" value="{{ old('nis') }}" required placeholder="Masukkan NIS Anda">
+                    @error('nis')
+                        <span class="error-message">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
                     <label class="form-label" for="username">Username</label>
-                    <input class="form-input" id="username" name="username" type="text" value="{{ old('username') }}" required autofocus autocomplete="username" placeholder="Masukkan username Anda">
+                    <input class="form-input" id="username" name="username" type="text" value="{{ old('username') }}" required placeholder="Pilih username unik">
                     @error('username')
                         <span class="error-message">{{ $message }}</span>
                     @enderror
@@ -155,25 +150,23 @@
 
                 <div class="form-group">
                     <label class="form-label" for="password">Password</label>
-                    <input class="form-input" id="password" name="password" type="password" required autocomplete="current-password" placeholder="Masukkan password Anda">
+                    <input class="form-input" id="password" name="password" type="password" required placeholder="Masukkan password (minimal 8 karakter)">
                     @error('password')
                         <span class="error-message">{{ $message }}</span>
                     @enderror
                 </div>
 
-                <label class="remember-me">
-                    <input name="remember" type="checkbox" value="1">
-                    <span>Ingat saya di perangkat ini</span>
-                </label>
+                <div class="form-group">
+                    <label class="form-label" for="password_confirmation">Konfirmasi Password</label>
+                    <input class="form-input" id="password_confirmation" name="password_confirmation" type="password" required placeholder="Ulangi password Anda">
+                </div>
 
-                <button class="login-button" type="submit" style="margin-bottom:16px;">Masuk ke Sistem</button>
+                <button class="login-button" type="submit" style="margin-bottom:16px;">Daftar Akun</button>
 
                 <div style="text-align: center; font-size: 0.875rem; color: #64748b;">
-                    Belum memiliki akun? <a href="{{ route('register') }}" style="color: #0f766e; font-weight: 750; text-decoration: none;">Daftar Mandiri (Siswa)</a>
+                    Sudah punya akun? <a href="{{ route('login') }}" style="color: #0f766e; font-weight: 700; text-decoration: none;">Masuk di sini</a>
                 </div>
             </form>
-
-
         </div>
     </div>
 @endsection

@@ -649,6 +649,10 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
                                 <span>Status C4.5</span>
                             </a>
+                            <a href="{{ route('admin.decision-tree.index') }}" class="sidebar-link {{ request()->routeIs('admin.decision-tree.*') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                <span>Pohon Keputusan</span>
+                            </a>
                         @elseif (auth()->user()->isRole(\App\Models\User::ROLE_GURU_BK))
                             <!-- Guru BK Navigation (MATCH PROPOSAL SCREENSHOT) -->
                             <a href="{{ route('guru-bk.dashboard') }}" class="sidebar-link {{ request()->routeIs('guru-bk.dashboard') ? 'active' : '' }}">
@@ -671,11 +675,19 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                                 <span>Rekomendasi Karir</span>
                             </a>
+                            <a href="{{ route('admin.decision-tree.index') }}" class="sidebar-link {{ request()->routeIs('admin.decision-tree.*') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+                                <span>Pohon Keputusan</span>
+                            </a>
                         @elseif (auth()->user()->isRole(\App\Models\User::ROLE_SISWA))
                             <!-- Siswa Navigation -->
                             <a href="{{ route('siswa.dashboard') }}" class="sidebar-link {{ request()->routeIs('siswa.dashboard') ? 'active' : '' }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                                 <span>Dashboard</span>
+                            </a>
+                            <a href="{{ route('siswa.biodata') }}" class="sidebar-link {{ request()->routeIs('siswa.biodata') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><path d="M4 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2"/></svg>
+                                <span>Biodata Saya</span>
                             </a>
                             <a href="{{ route('siswa.konsultasi.index') }}" class="sidebar-link {{ request()->routeIs('siswa.konsultasi.*') ? 'active' : '' }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>

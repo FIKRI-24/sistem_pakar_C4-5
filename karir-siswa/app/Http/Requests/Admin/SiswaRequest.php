@@ -28,6 +28,7 @@ class SiswaRequest extends FormRequest
             'nis' => ['required', 'string', 'max:20', Rule::unique('siswas')->ignore($siswa)],
             'kelas' => ['required', 'string', 'max:20'],
             'jurusan' => ['required', 'string', 'max:50'],
+            'jenis_kelamin' => ['nullable', 'string', Rule::in(['L', 'P'])],
         ];
     }
 }

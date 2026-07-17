@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\SiswaController;
 use App\Http\Controllers\Admin\SoalController;
 use App\Http\Controllers\Admin\TesController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Admin\DecisionTreeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Siswa\HasilTesController;
 use App\Http\Controllers\Siswa\KonsultasiController;
@@ -25,6 +26,9 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])
         ->middleware('throttle:5,1')
         ->name('login.store');
+
+    Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'create'])->name('register');
+    Route::post('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'store'])->name('register.store');
 });
 
 Route::middleware('auth')->group(function () {
@@ -54,6 +58,9 @@ Route::middleware('auth')->group(function () {
         Route::resource('tes', TesController::class)->except('show');
         Route::resource('soals', SoalController::class)->except('show');
         Route::resource('pilihan-jawabans', PilihanJawabanController::class)->except('show');
+
+        Route::get('decision-tree', [DecisionTreeController::class, 'index'])->name('decision-tree.index');
+        Route::post('decision-tree/train', [DecisionTreeController::class, 'train'])->name('decision-tree.train');
     });
 
     Route::get('/guru-bk/dashboard', [DashboardController::class, 'guruBk'])
@@ -62,9 +69,16 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('siswa')->name('siswa.')->middleware('role:siswa')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'siswa'])->name('dashboard');
-        Route::get('/konsultasi', [KonsultasiController::class, 'index'])->name('konsultasi.index');
-        Route::get('/konsultasi/{tes}', [KonsultasiController::class, 'show'])->name('konsultasi.show');
-        Route::post('/konsultasi/{tes}', [KonsultasiController::class, 'store'])->name('konsultasi.store');
+        
+        Route::get('/biodata', [\App\Http\Controllers\Siswa\BiodataController::class, 'edit'])->name('biodata');
+        Route::post('/biodata', [\App\Http\Controllers\Siswa\BiodataController::class, 'update'])->name('biodata.update');
+
+        Route::middleware('complete_biodata')->group(function () {
+            Route::get('/konsultasi', [KonsultasiController::class, 'index'])->name('konsultasi.index');
+            Route::get('/konsultasi/{tes}', [KonsultasiController::class, 'show'])->name('konsultasi.show');
+            Route::post('/konsultasi/{tes}', [KonsultasiController::class, 'store'])->name('konsultasi.store');
+        });
+
         Route::get('/hasil-tes', [HasilTesController::class, 'index'])->name('hasil-tes.index');
         Route::get('/hasil-tes/{hasilTes}', [HasilTesController::class, 'show'])->name('hasil-tes.show');
     });

@@ -126,6 +126,7 @@ class KonsultasiKarirTest extends TestCase
             'nis' => strtoupper($username),
             'kelas' => 'XII',
             'jurusan' => 'Teknik Komputer',
+            'jenis_kelamin' => 'L',
         ]);
 
         return [$user, $siswa];

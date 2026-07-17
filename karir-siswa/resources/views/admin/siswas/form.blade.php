@@ -11,6 +11,15 @@
             <div class="field"><label for="nis">NIS</label><input id="nis" name="nis" value="{{ old('nis', $siswa->nis) }}" required>@error('nis')<div class="error">{{ $message }}</div>@enderror</div>
             <div class="field"><label for="kelas">Kelas</label><input id="kelas" name="kelas" value="{{ old('kelas', $siswa->kelas) }}" required>@error('kelas')<div class="error">{{ $message }}</div>@enderror</div>
             <div class="field"><label for="jurusan">Jurusan</label><input id="jurusan" name="jurusan" value="{{ old('jurusan', $siswa->jurusan) }}" required>@error('jurusan')<div class="error">{{ $message }}</div>@enderror</div>
+            <div class="field">
+                <label for="jenis_kelamin">Jenis Kelamin</label>
+                <select id="jenis_kelamin" name="jenis_kelamin">
+                    <option value="">-- Pilih Jenis Kelamin --</option>
+                    <option value="L" {{ old('jenis_kelamin', $siswa->jenis_kelamin) === 'L' ? 'selected' : '' }}>Laki-laki</option>
+                    <option value="P" {{ old('jenis_kelamin', $siswa->jenis_kelamin) === 'P' ? 'selected' : '' }}>Perempuan</option>
+                </select>
+                @error('jenis_kelamin')<div class="error">{{ $message }}</div>@enderror
+            </div>
             <div class="field"><label for="email">Email akun (opsional)</label><input id="email" name="email" type="email" value="{{ old('email', $user?->email) }}">@error('email')<div class="error">{{ $message }}</div>@enderror</div>
             <div class="field"><label for="password">Password {{ $siswa->exists ? '(kosongkan jika tidak diubah)' : '' }}</label><input id="password" name="password" type="password" {{ $siswa->exists ? '' : 'required' }}>@error('password')<div class="error">{{ $message }}</div>@enderror</div>
             <div class="inline-actions"><button class="button" type="submit">Simpan</button><a class="button secondary" href="{{ route('admin.siswas.index') }}">Batal</a></div>

@@ -12,7 +12,7 @@ class Siswa extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['user_id', 'nis', 'kelas', 'jurusan'];
+    protected $fillable = ['user_id', 'nis', 'kelas', 'jurusan', 'jenis_kelamin'];
 
     public function user(): BelongsTo
     {

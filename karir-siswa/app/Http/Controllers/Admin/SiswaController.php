@@ -51,7 +51,7 @@ class SiswaController extends Controller
                 'password' => $request->string('password'),
                 'role' => User::ROLE_SISWA,
             ]);
-            $user->siswa()->create($request->safe()->only(['nis', 'kelas', 'jurusan']));
+            $user->siswa()->create($request->safe()->only(['nis', 'kelas', 'jurusan', 'jenis_kelamin']));
         });
 
         return to_route('admin.siswas.index')->with('success', 'Data siswa berhasil ditambahkan.');
@@ -72,7 +72,7 @@ class SiswaController extends Controller
                 $userData['password'] = $request->string('password');
             }
             $siswa->user->update($userData);
-            $siswa->update($request->safe()->only(['nis', 'kelas', 'jurusan']));
+            $siswa->update($request->safe()->only(['nis', 'kelas', 'jurusan', 'jenis_kelamin']));
         });
 
         return to_route('admin.siswas.index')->with('success', 'Data siswa berhasil diperbarui.');

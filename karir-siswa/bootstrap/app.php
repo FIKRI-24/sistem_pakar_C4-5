@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'role' => EnsureUserHasRole::class,
+            'complete_biodata' => \App\Http\Middleware\EnsureBiodataIsComplete::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

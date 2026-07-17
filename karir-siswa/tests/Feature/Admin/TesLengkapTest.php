@@ -139,7 +139,7 @@ class TesLengkapTest extends TestCase
 
         // Verify student can take this test
         $siswaUser = User::factory()->create(['role' => User::ROLE_SISWA]);
-        $siswaUser->siswa()->create(['nis' => '12345', 'kelas' => 'XII', 'jurusan' => 'TKJ']);
+        $siswaUser->siswa()->create(['nis' => '12345', 'kelas' => 'XII', 'jurusan' => 'TKJ', 'jenis_kelamin' => 'L']);
 
         $this->actingAs($siswaUser)->get(route('siswa.konsultasi.index'))->assertOk()
             ->assertSee('Tes Integrasi Lengkap');

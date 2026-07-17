@@ -38,6 +38,7 @@ class EndToEndFase1To3Test extends TestCase
             'nis' => $nis,
             'kelas' => 'XII TKJ 1',
             'jurusan' => 'Teknik Komputer dan Jaringan',
+            'jenis_kelamin' => 'L',
         ])->assertRedirect(route('admin.siswas.index'));
 
         $newStudent = Siswa::query()->where('nis', $nis)->with('user')->firstOrFail();

@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
             if ($savedUser->isRole(User::ROLE_SISWA)) {
                 Siswa::updateOrCreate(
                     ['user_id' => $savedUser->id],
-                    ['nis' => 'SISWA001', 'kelas' => 'XII', 'jurusan' => 'Teknik Komputer dan Jaringan']
+                    ['nis' => 'SISWA001', 'kelas' => 'XII', 'jurusan' => 'Teknik Komputer dan Jaringan', 'jenis_kelamin' => 'L']
                 );
             }
         }

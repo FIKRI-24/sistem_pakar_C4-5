@@ -71,6 +71,7 @@ class AssessmentCrudTest extends TestCase
             'nis' => '12345',
             'kelas' => 'XII',
             'jurusan' => 'Teknik Komputer',
+            'jenis_kelamin' => 'L',
         ]);
         
         $tes = Tes::create(['nama_tes' => 'Tes Cascade', 'status_aktif' => true]);
