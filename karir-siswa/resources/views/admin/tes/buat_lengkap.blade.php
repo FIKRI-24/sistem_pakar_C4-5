@@ -5,7 +5,7 @@
         <div>
             <p class="role-badge">Form Terintegrasi</p>
             <h1>Buat Tes Lengkap</h1>
-            <p class="muted">Buat 1 Tes, semua Soal, dan Pilihan Jawabannya sekaligus dalam satu halaman.</p>
+            <p class="muted">Buat 1 Tes, semua Pertanyaan, dan Pilihan Jawabannya sekaligus dalam satu halaman.</p>
         </div>
         <a class="button secondary" href="{{ route('admin.tes.index') }}">Kembali</a>
     </div>
@@ -65,11 +65,11 @@
                 <div style="display:flex; gap:8px;">
                     <button type="button" class="button" id="open-bank-btn" style="background-color:#0284c7;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                        Ambil dari Bank Soal
+                        Ambil dari Bank Pertanyaan
                     </button>
                     <button type="button" class="button" id="add-soal-btn" style="background-color:#0f766e;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                        Tambah Soal Manual
+                        Tambah Pertanyaan Manual
                     </button>
                 </div>
             </div>
@@ -77,11 +77,11 @@
             <!-- Generator Jumlah Soal -->
             <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:20px; margin-bottom:20px; display:flex; flex-wrap:wrap; align-items:flex-end; gap:16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
                 <div style="flex:1; min-width:200px; margin-bottom:0;" class="field">
-                    <label for="jumlah_soal_input" style="font-weight:700; color:#334155;">Buat Banyak Soal Sekaligus</label>
-                    <input id="jumlah_soal_input" type="number" min="1" max="50" placeholder="Masukkan jumlah kolom soal (misal: 10)" style="width:100%; box-sizing:border-box;">
+                    <label for="jumlah_soal_input" style="font-weight:700; color:#334155;">Buat Banyak Pertanyaan Sekaligus</label>
+                    <input id="jumlah_soal_input" type="number" min="1" max="50" placeholder="Masukkan jumlah kolom pertanyaan (misal: 10)" style="width:100%; box-sizing:border-box;">
                 </div>
                 <button type="button" class="button secondary" id="generate-soal-btn" style="min-height:42px; background:#f8fafc; font-weight:700; border: 1px solid #cbd5e1;">
-                    Generate Kolom Soal
+                    Generate Kolom Pertanyaan
                 </button>
             </div>
 
@@ -162,7 +162,7 @@
                         Pertanyaan #{soal_display_number}
                     </h3>
                     <button type="button" class="button danger delete-soal-btn" style="min-height:32px; padding:0 10px; font-size:0.85rem;">
-                        Hapus Soal
+                        Hapus Pertanyaan
                     </button>
                 </div>
 
@@ -528,7 +528,7 @@
                 });
                 
                 if (filtered.length === 0) {
-                    bankSoalsList.innerHTML = '<p style="color:#64748b; font-style:italic; text-align:center; padding:20px;">Tidak ada soal yang cocok dengan pencarian Anda.</p>';
+                    bankSoalsList.innerHTML = '<p style="color:#64748b; font-style:italic; text-align:center; padding:20px;">Tidak ada pertanyaan yang cocok dengan pencarian Anda.</p>';
                     return;
                 }
 
@@ -635,7 +635,7 @@
 
             // Update Import Button Text with count
             function updateImportBtnCount() {
-                importBankSoalBtn.textContent = `Masukkan ${selectedBankQuestions.size} Soal Terpilih`;
+                importBankSoalBtn.textContent = `Masukkan ${selectedBankQuestions.size} Pertanyaan Terpilih`;
                 importBankSoalBtn.disabled = selectedBankQuestions.size === 0;
                 importBankSoalBtn.style.opacity = selectedBankQuestions.size === 0 ? '0.5' : '1';
             }
@@ -749,7 +749,7 @@
                 <button type="button" class="button secondary" onclick="toggleSelectAllBankSoal()" id="select-all-bank-btn" style="min-height:36px; padding:0 14px; font-size:0.85rem; font-weight:700;">Pilih Semua Kategori Ini</button>
                 <div style="display:flex; gap:10px;">
                     <button type="button" class="button secondary" onclick="closeBankModal()" style="min-height:40px;">Batal</button>
-                    <button type="button" class="button" onclick="importSelectedBankSoal()" id="import-bank-soal-btn" style="background-color:#0284c7; font-weight:700; min-height:40px;">Masukkan 0 Soal Terpilih</button>
+                    <button type="button" class="button" onclick="importSelectedBankSoal()" id="import-bank-soal-btn" style="background-color:#0284c7; font-weight:700; min-height:40px;">Masukkan 0 Pertanyaan Terpilih</button>
                 </div>
             </div>
         </div>

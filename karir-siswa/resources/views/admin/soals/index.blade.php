@@ -1,16 +1,16 @@
-@extends('layouts.app', ['title' => 'Data Soal'])
+@extends('layouts.app', ['title' => 'Data Pertanyaan'])
 
 @section('content')
     <div style="display: flex; flex-direction: column; gap: 24px;">
         <!-- Header -->
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
             <div>
-                <h1 style="margin: 0 0 4px; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.025em; color: #0f172a;">Data Butir Soal</h1>
+                <h1 style="margin: 0 0 4px; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.025em; color: #0f172a;">Data Butir Pertanyaan</h1>
                 <p style="margin: 0; font-size: 0.95rem; color: #64748b;">Kelola daftar pertanyaan kuesioner psikotes minat, bakat, kepribadian, dan akademik.</p>
             </div>
             <a href="{{ route('admin.soals.create') }}" style="background-color: #0f766e; color: #ffffff; padding: 10px 18px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 6px -1px rgba(15, 118, 110, 0.15); transition: all 0.2s;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Tambah Soal
+                Tambah Pertanyaan
             </a>
         </div>
 
@@ -100,7 +100,7 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
                                             Ubah
                                         </a>
-                                        <form method="POST" action="{{ route('admin.soals.destroy', $soal) }}" onsubmit="return confirm('Apakah Anda yakin ingin menghapus soal ini?')" style="margin: 0; display: inline-block;">
+                                        <form method="POST" action="{{ route('admin.soals.destroy', $soal) }}" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pertanyaan ini?')" style="margin: 0; display: inline-block;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" style="background-color: #fee2e2; border: 1px solid #fecaca; color: #991b1b; padding: 6px 12px; border-radius: 6px; font-weight: 700; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; transition: all 0.2s; border: 1px solid #fecaca;">
@@ -114,7 +114,7 @@
                         @empty
                             <tr>
                                 <td colspan="4" style="padding: 32px 20px; text-align: center; color: #64748b; font-style: italic;">
-                                    Belum ada data butir soal.
+                                    Belum ada data butir pertanyaan.
                                 </td>
                             </tr>
                         @endforelse

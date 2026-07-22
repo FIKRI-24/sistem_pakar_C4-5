@@ -631,7 +631,7 @@
                             </a>
                             <a href="{{ route('admin.soals.index') }}" class="sidebar-link {{ request()->routeIs('admin.soals.*') ? 'active' : '' }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><path d="M12 17h.01"/></svg>
-                                <span>Soal</span>
+                                <span>Pertanyaan</span>
                             </a>
                             <a href="{{ route('admin.tes.hasil-tes') }}" class="sidebar-link {{ request()->routeIs('admin.tes.hasil-tes') ? 'active' : '' }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
@@ -665,7 +665,7 @@
                             </a>
                             <a href="{{ route('admin.soals.index') }}" class="sidebar-link {{ request()->routeIs('admin.soals.*') ? 'active' : '' }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><path d="M12 17h.01"/></svg>
-                                <span>Soal</span>
+                                <span>Pertanyaan</span>
                             </a>
                             <a href="{{ route('admin.tes.hasil-tes') }}" class="sidebar-link {{ request()->routeIs('admin.tes.hasil-tes') ? 'active' : '' }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
