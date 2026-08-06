@@ -4,8 +4,6 @@ venv/
 
 # Local configuration
 .env
-.env.example
-*.env.example
 
 # Python caches and build artifacts
 __pycache__/
