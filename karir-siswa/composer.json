@@ -46,6 +46,10 @@
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1 --timeout=0\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite --kill-others"
         ],
+        "dev:all": [
+            "Composer\\Config::disableProcessTimeout",
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185\" \"php artisan serve --port=8000\" \"cd ../c45-service && .venv\\\\Scripts\\\\python.exe -m uvicorn app.main:app --reload --port 8001\" \"npm run dev\" --names=laravel,c45-python,vite --kill-others"
+        ],
         "test": [
             "@php artisan config:clear --ansi",
             "@php artisan test"

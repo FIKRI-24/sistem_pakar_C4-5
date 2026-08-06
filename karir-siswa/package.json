@@ -4,7 +4,9 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "dev:all": "npx concurrently -k -n \"LARAVEL,PYTHON,VITE\" -c \"magenta.bold,cyan.bold,yellow.bold\" \"php artisan serve --port=8000\" \"cd ../c45-service && .venv\\\\Scripts\\\\python.exe -m uvicorn app.main:app --reload --port 8001\" \"vite\"",
+        "serve:all": "npx concurrently -k -n \"LARAVEL,PYTHON\" -c \"magenta.bold,cyan.bold\" \"php artisan serve --port=8000\" \"cd ../c45-service && .venv\\\\Scripts\\\\python.exe -m uvicorn app.main:app --reload --port 8001\""
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",

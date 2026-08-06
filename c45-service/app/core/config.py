@@ -29,6 +29,13 @@ class Settings(BaseSettings):
         "info"
     )
 
+    # Database configuration
+    db_host: str = "127.0.0.1"
+    db_port: int = 3306
+    db_database: str = "sistem_pakar"
+    db_username: str = "root"
+    db_password: str = ""
+
 
 @lru_cache
 def get_settings() -> Settings:

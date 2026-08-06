@@ -24,201 +24,215 @@
     <form method="POST" action="{{ route('admin.tes.buat-lengkap.store') }}" id="full-test-form">
         @csrf
 
-        <!-- Detail Tes -->
-        <section class="panel" style="margin-bottom:28px">
-            <div class="panel-body">
-                <h2 style="margin-top:0; font-size:1.3rem; font-weight:750; color:#1e293b; border-bottom:1px solid #e2e8f0; padding-bottom:12px; margin-bottom:20px;">
-                    Detail Tes / Kuesioner
-                </h2>
-
-                <div class="field">
-                    <label for="nama_tes">Nama Tes *</label>
-                    <input id="nama_tes" name="nama_tes" type="text" value="{{ old('nama_tes') }}" required placeholder="Contoh: Kuesioner Minat Bakat Siswa v1">
-                </div>
-
-                <div class="field">
-                    <label for="deskripsi">Deskripsi</label>
-                    <textarea id="deskripsi" name="deskripsi" placeholder="Tulis instruksi pengerjaan tes untuk siswa...">{{ old('deskripsi') }}</textarea>
-                </div>
-
-                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:20px;">
-                    <div class="field">
-                        <label for="durasi_menit">Estimasi Durasi (Menit)</label>
-                        <input id="durasi_menit" name="durasi_menit" type="number" min="1" value="{{ old('durasi_menit') }}" placeholder="Contoh: 15">
-                    </div>
-
-                    <div class="field">
-                        <label for="status_aktif">Status Aktif *</label>
-                        <select id="status_aktif" name="status_aktif" required>
-                            <option value="1" @selected(old('status_aktif', '1') == '1')>Aktif</option>
-                            <option value="0" @selected(old('status_aktif') == '0')>Tidak Aktif</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Daftar Soal -->
-        <div style="margin-bottom:28px">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
-                <h2 style="font-size:1.3rem; font-weight:750; color:#1e293b; margin:0;">Daftar Pertanyaan & Pilihan Jawaban</h2>
-                <div style="display:flex; gap:8px;">
-                    <button type="button" class="button" id="open-bank-btn" style="background-color:#0284c7;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                        Ambil dari Bank Pertanyaan
-                    </button>
-                    <button type="button" class="button" id="add-soal-btn" style="background-color:#0f766e;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                        Tambah Pertanyaan Manual
-                    </button>
-                </div>
+    <!-- Detail Tes Card -->
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); overflow: hidden; margin-bottom: 28px;">
+        <div style="padding: 24px 32px; border-bottom: 1px solid #f1f5f9; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);">
+            <h2 style="margin: 0; font-size: 1.25rem; font-weight: 800; color: #0f172a; letter-spacing: -0.02em;">
+                Detail Tes / Kuesioner
+            </h2>
+            <p style="margin: 4px 0 0; font-size: 0.875rem; color: #64748b; font-weight: 600;">
+                Tentukan nama, deskripsi instruksi, durasi, dan status aktif untuk instrumen kuesioner ini.
+            </p>
+        </div>
+        <div style="padding: 28px 32px; display: flex; flex-direction: column; gap: 20px;">
+            <div class="field" style="margin: 0;">
+                <label for="nama_tes" style="font-weight: 750; color: #334155; font-size: 0.875rem; margin-bottom: 8px; display: block;">Nama Tes *</label>
+                <input id="nama_tes" name="nama_tes" type="text" value="{{ old('nama_tes') }}" required placeholder="Contoh: Kuesioner Minat & Bakat Siswa v1" style="width: 100%; box-sizing: border-box; min-height: 44px; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 0.95rem; font-weight: 600; color: #0f172a; font-family: inherit;">
             </div>
 
-            <!-- Generator Jumlah Soal -->
-            <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:20px; margin-bottom:20px; display:flex; flex-wrap:wrap; align-items:flex-end; gap:16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
-                <div style="flex:1; min-width:200px; margin-bottom:0;" class="field">
-                    <label for="jumlah_soal_input" style="font-weight:700; color:#334155;">Buat Banyak Pertanyaan Sekaligus</label>
-                    <input id="jumlah_soal_input" type="number" min="1" max="50" placeholder="Masukkan jumlah kolom pertanyaan (misal: 10)" style="width:100%; box-sizing:border-box;">
+            <div class="field" style="margin: 0;">
+                <label for="deskripsi" style="font-weight: 750; color: #334155; font-size: 0.875rem; margin-bottom: 8px; display: block;">Deskripsi & Instruksi Pengerjaan</label>
+                <textarea id="deskripsi" name="deskripsi" placeholder="Tulis instruksi pengerjaan tes untuk siswa..." style="width: 100%; box-sizing: border-box; min-height: 80px; padding: 12px 14px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 0.925rem; font-weight: 600; color: #0f172a; line-height: 1.5; font-family: inherit;">{{ old('deskripsi') }}</textarea>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                <div class="field" style="margin: 0;">
+                    <label for="durasi_menit" style="font-weight: 750; color: #334155; font-size: 0.875rem; margin-bottom: 8px; display: block;">Estimasi Durasi (Menit)</label>
+                    <input id="durasi_menit" name="durasi_menit" type="number" min="1" value="{{ old('durasi_menit') }}" placeholder="Contoh: 15" style="width: 100%; box-sizing: border-box; min-height: 44px; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 0.95rem; font-weight: 600; color: #0f172a; font-family: inherit;">
                 </div>
-                <button type="button" class="button secondary" id="generate-soal-btn" style="min-height:42px; background:#f8fafc; font-weight:700; border: 1px solid #cbd5e1;">
-                    Generate Kolom Pertanyaan
+
+                <div class="field" style="margin: 0;">
+                    <label for="status_aktif" style="font-weight: 750; color: #334155; font-size: 0.875rem; margin-bottom: 8px; display: block;">Status Aktif *</label>
+                    <select id="status_aktif" name="status_aktif" required style="width: 100%; box-sizing: border-box; min-height: 44px; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 0.9rem; font-weight: 700; color: #0f172a; background-color: #ffffff; font-family: inherit;">
+                        <option value="1" @selected(old('status_aktif', '1') == '1')>Aktif</option>
+                        <option value="0" @selected(old('status_aktif') == '0')>Tidak Aktif</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Daftar Soal Header & Action Toolbar -->
+    <div style="margin-bottom: 28px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; flex-wrap: wrap; gap: 14px;">
+            <div>
+                <h2 style="font-size: 1.3rem; font-weight: 800; color: #0f172a; margin: 0 0 4px; letter-spacing: -0.02em;">Daftar Pertanyaan & Pilihan Jawaban</h2>
+                <p style="margin: 0; font-size: 0.875rem; color: #64748b; font-weight: 600;">Kelola setiap butir pertanyaan kuesioner atau ambil langsung dari Bank Soal Standar.</p>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button type="button" class="btn-3d btn-3d-blue" id="open-bank-btn" style="min-height: 42px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    <span>Ambil dari Bank Pertanyaan</span>
+                </button>
+                <button type="button" class="btn-3d btn-3d-emerald" id="add-soal-btn" style="min-height: 42px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <span>Tambah Pertanyaan Manual</span>
                 </button>
             </div>
+        </div>
 
-            <!-- Kamus & Panduan Opsi Kategori (RIASEC, DAT, DISC) -->
-            <div class="panel" style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:12px; margin-bottom:24px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
-                <div class="panel-body" style="padding:16px 20px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="togglePanduan()">
-                        <div style="display:flex; align-items:center; gap:8px;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                            <h3 style="margin:0; font-size:1rem; font-weight:700; color:#0f766e;">Kamus & Panduan Opsi Kategori (RIASEC, DAT, DISC)</h3>
+        <!-- Generator Jumlah Soal Card -->
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 22px 26px; margin-bottom: 24px; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.02);">
+            <div style="flex: 1; min-width: 240px; margin-bottom: 0;" class="field">
+                <label for="jumlah_soal_input" style="font-weight: 750; color: #334155; font-size: 0.875rem; margin-bottom: 6px; display: block;">Buat Banyak Pertanyaan Sekaligus</label>
+                <input id="jumlah_soal_input" type="number" min="1" max="50" placeholder="Masukkan jumlah kolom pertanyaan (misal: 10)" style="width: 100%; box-sizing: border-box; min-height: 42px; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 0.9rem; font-weight: 600; color: #0f172a; font-family: inherit;">
+            </div>
+            <button type="button" class="btn-3d btn-3d-secondary" id="generate-soal-btn" style="min-height: 42px; padding: 0 20px;">
+                Generate Kolom Pertanyaan
+            </button>
+        </div>
+
+        <!-- Kamus & Panduan Opsi Kategori Card -->
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; margin-bottom: 28px; box-shadow: 0 4px 16px rgba(0,0,0,0.02); overflow: hidden;">
+            <div style="padding: 18px 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="togglePanduan()">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 32px; height: 32px; border-radius: 8px; background: #e0f2fe; color: #0369a1; display: flex; align-items: center; justify-content: center; font-weight: 800;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
                         </div>
-                        <span id="toggle-icon-panduan" style="font-weight:700; color:#0f766e; font-size:0.85rem;">[ Tampilkan Panduan ]</span>
+                        <h3 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: #0f766e;">Kamus & Panduan Opsi Kategori (RIASEC, DAT, DISC)</h3>
                     </div>
+                    <span id="toggle-icon-panduan" style="font-weight: 800; color: #0f766e; font-size: 0.85rem; background: #ffffff; padding: 4px 12px; border-radius: 20px; border: 1px solid #cbd5e1;">[ Tampilkan Panduan ]</span>
+                </div>
+                
+                <div id="panduan-content" style="display: none; margin-top: 18px; border-top: 1px solid #e2e8f0; padding-top: 18px; font-size: 0.875rem; line-height: 1.6; color: #334155;">
+                    <p style="margin-top: 0; margin-bottom: 16px; font-style: italic; color: #64748b; font-weight: 600;">Gunakan kamus ini sebagai panduan untuk memetakan setiap pilihan jawaban ke sub-kategori psikologi yang sesuai. Hal ini memastikan algoritma C4.5 dapat melakukan klasifikasi karir secara tepat.</p>
                     
-                    <div id="panduan-content" style="display:none; margin-top:16px; border-top:1px solid #cbd5e1; padding-top:16px; font-size:0.85rem; line-height:1.6; color:#334155;">
-                        <p style="margin-top:0; margin-bottom:14px; font-style:italic; color:#64748b;">Gunakan kamus ini sebagai panduan untuk memetakan setiap pilihan jawaban ke sub-kategori psikologi yang sesuai. Hal ini memastikan algoritma C4.5 dapat melakukan klasifikasi karir secara tepat.</p>
-                        
-                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:20px;">
-                            <!-- MINAT (RIASEC) -->
-                            <div style="background:#ffffff; padding:16px; border:1px solid #e2e8f0; border-radius:8px;">
-                                <h4 style="margin-top:0; margin-bottom:10px; color:#0f766e; border-bottom:2px solid #0f766e; padding-bottom:6px; font-weight:700; font-size:0.9rem;">Minat (RIASEC / Holland Code)</h4>
-                                <ul style="padding-left:16px; margin:0; display:flex; flex-direction:column; gap:8px; list-style-type:disc;">
-                                    <li><strong>Realistic (Realistis):</strong> Suka kerja praktis dengan benda, alat, mesin, atau tanaman/hewan (misal: instalasi kabel, pertukangan, hidroponik).</li>
-                                    <li><strong>Investigative (Penyelidikan):</strong> Suka analisis, observasi, riset ilmiah, troubleshooting eror, dan logika matematika.</li>
-                                    <li><strong>Artistic (Artistik):</strong> Suka seni, desain grafis/UI, menulis kreatif, musik, dan ekspresi diri bebas.</li>
-                                    <li><strong>Social (Sosial):</strong> Suka mengajar, membantu, konseling, atau melatih teman/kelompok.</li>
-                                    <li><strong>Enterprising (Giat):</strong> Suka memimpin, bisnis, wirausaha, promosi, negosiasi, dan membujuk orang lain.</li>
-                                    <li><strong>Conventional (Konvensional):</strong> Suka keteraturan, administrasi kantor, pembukuan uang, pencatatan data/arsip, dan kerapian.</li>
-                                </ul>
-                            </div>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                        <!-- MINAT (RIASEC) -->
+                        <div style="background: #ffffff; padding: 18px; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+                            <h4 style="margin-top: 0; margin-bottom: 12px; color: #0f766e; border-bottom: 2px solid #0f766e; padding-bottom: 6px; font-weight: 800; font-size: 0.95rem;">Minat (RIASEC / Holland Code)</h4>
+                            <ul style="padding-left: 18px; margin: 0; display: flex; flex-direction: column; gap: 8px; list-style-type: disc;">
+                                <li><strong>Realistic (Realistis):</strong> Suka kerja praktis dengan benda, alat, mesin, atau tanaman/hewan (misal: instalasi kabel, pertukangan, hidroponik).</li>
+                                <li><strong>Investigative (Penyelidikan):</strong> Suka analisis, observasi, riset ilmiah, troubleshooting eror, dan logika matematika.</li>
+                                <li><strong>Artistic (Artistik):</strong> Suka seni, desain grafis/UI, menulis kreatif, musik, dan ekspresi diri bebas.</li>
+                                <li><strong>Social (Sosial):</strong> Suka mengajar, membantu, konseling, atau melatih teman/kelompok.</li>
+                                <li><strong>Enterprising (Giat):</strong> Suka memimpin, bisnis, wirausaha, promosi, negosiasi, dan membujuk orang lain.</li>
+                                <li><strong>Conventional (Konvensional):</strong> Suka keteraturan, administrasi kantor, pembukuan uang, pencatatan data/arsip, dan kerapian.</li>
+                            </ul>
+                        </div>
 
-                            <!-- BAKAT (DAT) -->
-                            <div style="background:#ffffff; padding:16px; border:1px solid #e2e8f0; border-radius:8px;">
-                                <h4 style="margin-top:0; margin-bottom:10px; color:#0f766e; border-bottom:2px solid #0f766e; padding-bottom:6px; font-weight:700; font-size:0.9rem;">Bakat (DAT - Differential Aptitude)</h4>
-                                <ul style="padding-left:16px; margin:0; display:flex; flex-direction:column; gap:8px; list-style-type:disc;">
-                                    <li><strong>Verbal:</strong> Kemampuan memahami/menganalisis kalimat panjang, menulis rapi, dan presentasi/debat lisan.</li>
-                                    <li><strong>Numerik/Logika:</strong> Kemampuan berhitung cepat, membaca grafik/tabel keuangan, dan memecahkan soal logika runut.</li>
-                                    <li><strong>Spasial/Visual:</strong> Kemampuan membayangkan objek 3D di kepala, menggambar peta arah, arsitektur, dan sketsa visual.</li>
-                                    <li><strong>Motorik/Praktikal:</strong> Kemampuan koordinasi tangan-mata, memotong/merakit benda presisi, stamina fisik di lapangan.</li>
-                                </ul>
-                            </div>
+                        <!-- BAKAT (DAT) -->
+                        <div style="background: #ffffff; padding: 18px; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+                            <h4 style="margin-top: 0; margin-bottom: 12px; color: #0f766e; border-bottom: 2px solid #0f766e; padding-bottom: 6px; font-weight: 800; font-size: 0.95rem;">Bakat (DAT - Differential Aptitude)</h4>
+                            <ul style="padding-left: 18px; margin: 0; display: flex; flex-direction: column; gap: 8px; list-style-type: disc;">
+                                <li><strong>Verbal:</strong> Kemampuan memahami/menganalisis kalimat panjang, menulis rapi, dan presentasi/debat lisan.</li>
+                                <li><strong>Numerik/Logika:</strong> Kemampuan berhitung cepat, membaca grafik/tabel keuangan, dan memecahkan soal logika runut.</li>
+                                <li><strong>Spasial/Visual:</strong> Kemampuan membayangkan objek 3D di kepala, menggambar peta arah, arsitektur, dan sketsa visual.</li>
+                                <li><strong>Motorik/Praktikal:</strong> Kemampuan koordinasi tangan-mata, memotong/merakit benda presisi, stamina fisik di lapangan.</li>
+                            </ul>
+                        </div>
 
-                            <!-- KEPRIBADIAN (DISC) -->
-                            <div style="background:#ffffff; padding:16px; border:1px solid #e2e8f0; border-radius:8px;">
-                                <h4 style="margin-top:0; margin-bottom:10px; color:#0f766e; border-bottom:2px solid #0f766e; padding-bottom:6px; font-weight:700; font-size:0.9rem;">Kepribadian Kerja (DISC)</h4>
-                                <ul style="padding-left:16px; margin:0; display:flex; flex-direction:column; gap:8px; list-style-type:disc;">
-                                    <li><strong>Dominance (Dominan):</strong> Tegas, fokus pada target cepat, menyukai tantangan/kompetisi, siap mengambil keputusan berisiko.</li>
-                                    <li><strong>Influence (Intuitif/Sosial):</strong> Antusias, ramah, persuasif, suka ngobrol/sosialisasi, pandai memotivasi tim.</li>
-                                    <li><strong>Steadiness (Stabil/Tenang):</strong> Sabar, setia kawan, pendengar baik, menyukai ritme stabil, menghindari konflik.</li>
-                                    <li><strong>Compliance (Patuh/Sistematis):</strong> Teliti memeriksa detail agar bebas dari salah ejaan/angka, taat aturan, bekerja terstruktur.</li>
-                                </ul>
-                            </div>
+                        <!-- KEPRIBADIAN (DISC) -->
+                        <div style="background: #ffffff; padding: 18px; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+                            <h4 style="margin-top: 0; margin-bottom: 12px; color: #0f766e; border-bottom: 2px solid #0f766e; padding-bottom: 6px; font-weight: 800; font-size: 0.95rem;">Kepribadian Kerja (DISC)</h4>
+                            <ul style="padding-left: 18px; margin: 0; display: flex; flex-direction: column; gap: 8px; list-style-type: disc;">
+                                <li><strong>Dominance (Dominan):</strong> Tegas, fokus pada target cepat, menyukai tantangan/kompetisi, siap mengambil keputusan berisiko.</li>
+                                <li><strong>Influence (Intuitif/Sosial):</strong> Antusias, ramah, persuasif, suka ngobrol/sosialisasi, pandai memotivasi tim.</li>
+                                <li><strong>Steadiness (Stabil/Tenang):</strong> Sabar, setia kawan, pendengar baik, menyukai ritme stabil, menghindari konflik.</li>
+                                <li><strong>Compliance (Patuh/Sistematis):</strong> Teliti memeriksa detail agar bebas dari salah ejaan/angka, taat aturan, bekerja terstruktur.</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div id="soals-container" style="display:flex; flex-direction:column; gap:24px;">
-                <!-- Soal blocks will be appended here dynamically -->
-            </div>
         </div>
 
-        <!-- Tombol Aksi Form -->
-        <div class="panel">
-            <div class="panel-body" style="padding:20px; display:flex; justify-content:flex-end; gap:12px;">
-                <a class="button secondary" href="{{ route('admin.tes.index') }}">Batal</a>
-                <button class="button" type="submit">Simpan Seluruh Tes</button>
-            </div>
+        <div id="soals-container" style="display: flex; flex-direction: column; gap: 24px;">
+            <!-- Soal blocks will be appended here dynamically -->
         </div>
-    </form>
+    </div>
+
+    <!-- Tombol Aksi Form -->
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); margin-top: 28px; display: flex; justify-content: flex-end; gap: 12px;">
+        <a class="btn-3d btn-3d-secondary" href="{{ route('admin.tes.index') }}">Batal</a>
+        <button class="btn-3d btn-3d-emerald" type="submit">Simpan Seluruh Tes</button>
+    </div>
+</form>
 
     <!-- Templates for Dynamic Javascript Injection -->
     <template id="soal-template">
-        <div class="panel soal-block" data-index="{soal_index}" style="border-left: 4px solid #0f766e;">
-            <div class="panel-body" style="padding: 24px 28px;">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:16px;">
-                    <h3 class="soal-number-label" style="margin:0; font-size:1.1rem; font-weight:700; color:#0f766e;">
+        <div class="soal-block" data-index="{soal_index}" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); overflow: hidden; margin-bottom: 24px;">
+            <!-- Card Header -->
+            <div style="padding: 18px 24px; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-bottom: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 32px; height: 32px; border-radius: 8px; background: #0f766e; color: #ffffff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.875rem; box-shadow: 0 2px 6px rgba(15, 118, 110, 0.25);">
+                        #{soal_display_number}
+                    </div>
+                    <h3 class="soal-number-label" style="margin: 0; font-size: 1.05rem; font-weight: 800; color: #0f172a; letter-spacing: -0.01em;">
                         Pertanyaan #{soal_display_number}
                     </h3>
-                    <button type="button" class="button danger delete-soal-btn" style="min-height:32px; padding:0 10px; font-size:0.85rem;">
-                        Hapus Pertanyaan
-                    </button>
                 </div>
+                <button type="button" class="delete-soal-btn" style="display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.2s;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                    <span>Hapus Pertanyaan</span>
+                </button>
+            </div>
 
-                <div class="field">
-                    <label>Teks Pertanyaan *</label>
-                    <textarea name="soals[{soal_index}][pertanyaan]" required placeholder="Masukkan butir pertanyaan psikotes..." style="min-height:70px;"></textarea>
+            <!-- Card Body -->
+            <div style="padding: 24px 28px; display: flex; flex-direction: column; gap: 20px;">
+                <div class="field" style="margin: 0;">
+                    <label style="font-weight: 750; color: #334155; font-size: 0.875rem; margin-bottom: 8px; display: block;">Teks Pertanyaan *</label>
+                    <textarea name="soals[{soal_index}][pertanyaan]" required placeholder="Masukkan butir pertanyaan psikotes..." style="min-height: 80px; width: 100%; box-sizing: border-box; padding: 12px 16px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 0.925rem; font-weight: 600; color: #0f172a; line-height: 1.5; font-family: inherit;"></textarea>
                 </div>
-                <div style="margin-bottom:20px;">
-                    <div class="field">
-                        <label>Kriteria Penilai *</label>
-                        <select name="soals[{soal_index}][kriteria_id]" required class="kriteria-select">
-                            <option value="">-- Pilih Kriteria --</option>
-                            @foreach ($kriterias as $k)
-                                <option value="{{ $k->id }}" data-type="{{ $k->tipe_data }}">{{ $k->nama_kriteria }} ({{ ucfirst($k->tipe_data) }})</option>
-                            @endforeach
-                        </select>
-                    </div>
+                <div class="field" style="margin: 0;">
+                    <label style="font-weight: 750; color: #334155; font-size: 0.875rem; margin-bottom: 8px; display: block;">Kriteria Penilai *</label>
+                    <select name="soals[{soal_index}][kriteria_id]" required class="kriteria-select" style="width: 100%; box-sizing: border-box; min-height: 44px; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 0.9rem; font-weight: 700; color: #0f172a; background-color: #ffffff; font-family: inherit;">
+                        <option value="">-- Pilih Kriteria --</option>
+                        @foreach ($kriterias as $k)
+                            <option value="{{ $k->id }}" data-type="{{ $k->tipe_data }}">{{ $k->nama_kriteria }} ({{ ucfirst($k->tipe_data) }})</option>
+                        @endforeach
+                    </select>
                     <input name="soals[{soal_index}][urutan]" type="hidden" class="soal-urutan-input">
                 </div>
+
                 <!-- Choices Container (only for Categorical) -->
-                <div class="choices-section-container" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:16px; display:none;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                        <h4 style="margin:0; font-size:0.9rem; font-weight:700; color:#334155;">Pilihan Jawaban (Minimal 2)</h4>
-                        <button type="button" class="button secondary add-choice-btn" style="min-height:30px; padding:0 10px; font-size:0.8rem; background:#ffffff;">
+                <div class="choices-section-container" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+                        <h4 style="margin: 0; font-size: 0.925rem; font-weight: 800; color: #1e293b;">Pilihan Jawaban (Minimal 2)</h4>
+                        <button type="button" class="add-choice-btn" style="display: inline-flex; align-items: center; gap: 4px; padding: 6px 14px; background: #ffffff; border: 1px solid #cbd5e1; color: #0f766e; border-radius: 8px; font-size: 0.8rem; font-weight: 800; cursor: pointer; transition: all 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
                             + Tambah Pilihan
                         </button>
                     </div>
 
-                    <div class="choices-list-container" style="display:flex; flex-direction:column; gap:8px;">
+                    <div class="choices-list-container" style="display: flex; flex-direction: column; gap: 10px;">
                         <!-- Choice rows will be appended here -->
                     </div>
                 </div>
 
                 <!-- Info Box for Numeric Criterion -->
-                <div class="numeric-info-container" style="background:#f0f9ff; border:1px solid #bae6fd; color:#0369a1; border-radius:8px; padding:14px; display:none; font-size:0.875rem;">
-                    <strong>Kriteria Numerik Terpilih</strong>: Siswa akan menginput nilai angka secara langsung (skala 0-100) di form kuesioner. Pilihan jawaban tidak diperlukan untuk kriteria ini.
+                <div class="numeric-info-container" style="background: #f0fdf4; border: 1px solid #ccfbf1; color: #0f766e; border-radius: 12px; padding: 16px 20px; display: none; font-size: 0.875rem; font-weight: 600; line-height: 1.5;">
+                    <strong style="font-weight: 800;">Kriteria Numerik Terpilih:</strong> Siswa akan menginput nilai angka secara langsung (skala 0-100) di form kuesioner. Pilihan jawaban tidak diperlukan untuk kriteria ini.
                 </div>
             </div>
         </div>
     </template>
 
     <template id="choice-template">
-        <div class="choice-row" data-choice-index="{choice_index}" style="display:grid; grid-template-columns: 2fr 1fr 2fr auto; gap:10px; align-items:center; background:#ffffff; padding:8px; border:1px solid #e2e8f0; border-radius:6px;">
+        <div class="choice-row" data-choice-index="{choice_index}" style="display: grid; grid-template-columns: 2fr 1fr 2fr auto; gap: 10px; align-items: center; background: #ffffff; padding: 10px 14px; border: 1px solid #e2e8f0; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.02);">
             <div>
-                <input type="text" name="soals[{soal_index}][pilihans][{choice_index}][pilihan]" required placeholder="Teks Pilihan (misal: Sangat Suka)" style="width:100%; box-sizing:border-box; min-height:36px; padding:0 10px; border:1px solid #cbd5e1; border-radius:6px; font-size:0.85rem;">
+                <input type="text" name="soals[{soal_index}][pilihans][{choice_index}][pilihan]" required placeholder="Teks Pilihan (misal: Sangat Suka)" style="width: 100%; box-sizing: border-box; min-height: 40px; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.875rem; font-weight: 600; color: #0f172a; font-family: inherit;">
             </div>
             <div>
-                <input type="number" name="soals[{soal_index}][pilihans][{choice_index}][skor]" required min="1" max="5" step="0.1" placeholder="Skor (1-5)" style="width:100%; box-sizing:border-box; min-height:36px; padding:0 10px; border:1px solid #cbd5e1; border-radius:6px; font-size:0.85rem;">
+                <input type="number" name="soals[{soal_index}][pilihans][{choice_index}][skor]" required min="1" max="5" step="0.1" placeholder="Skor (1-5)" style="width: 100%; box-sizing: border-box; min-height: 40px; padding: 8px 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.875rem; font-weight: 700; color: #0f172a; font-family: inherit;">
             </div>
             <div>
-                <select name="soals[{soal_index}][pilihans][{choice_index}][kriteria_opsi_id]" required style="width:100%; box-sizing:border-box; min-height:36px; padding:0 8px; border:1px solid #cbd5e1; border-radius:6px; font-size:0.85rem;" class="opsi-select">
+                <select name="soals[{soal_index}][pilihans][{choice_index}][kriteria_opsi_id]" required style="width: 100%; box-sizing: border-box; min-height: 40px; padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.875rem; font-weight: 700; color: #0f172a; background-color: #ffffff; font-family: inherit;" class="opsi-select">
                     <option value="">-- Pilih Opsi --</option>
                 </select>
             </div>
             <div>
-                <button type="button" class="button danger delete-choice-btn" style="min-height:36px; padding:0 10px; background:#ef4444; border-radius:6px;">
+                <button type="button" class="delete-choice-btn" style="min-height: 40px; padding: 0 12px; background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                 </button>
             </div>

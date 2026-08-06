@@ -11,11 +11,15 @@
             line-height: 1.5;
         }
 
-        body {
+        html, body {
             margin: 0;
+            padding: 0;
             min-height: 100vh;
             color: #334155;
             background: #f8fafc;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
         }
 
         a {
@@ -26,6 +30,8 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
+            width: 100%;
         }
 
         .topbar {
@@ -382,6 +388,9 @@
             display: flex;
             min-height: 100vh;
             background: #f8fafc;
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
         }
 
         .sidebar {
@@ -462,6 +471,9 @@
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
+            width: calc(100% - 270px);
+            max-width: 100%;
+            overflow-x: hidden;
         }
 
         .main-header {
@@ -488,6 +500,9 @@
             padding: 32px clamp(20px, 4vw, 40px);
             flex: 1;
             box-sizing: border-box;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
         }
 
         .profile-dropdown-btn {
@@ -580,6 +595,20 @@
 
             .main-content {
                 margin-left: 0;
+                width: 100%;
+            }
+
+            .main-header {
+                padding: 0 16px;
+                height: 60px;
+            }
+
+            .main-header-title {
+                font-size: 1.1rem;
+            }
+
+            .main-body {
+                padding: 16px 12px;
             }
 
             .mobile-sidebar-toggle {
@@ -600,9 +629,14 @@
             <aside class="sidebar" id="sidebar">
                 <div>
                     <!-- Brand/Logo -->
-                    <div class="sidebar-brand">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                        <span>Sistem Pakar Karir</span>
+                    <div class="sidebar-brand" style="display: flex; align-items: center; gap: 10px; padding: 18px 20px;">
+                        <div style="width: 36px; height: 36px; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 2px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); flex-shrink: 0;">
+                            <img src="{{ asset('images/logo-smkn1.jpg') }}" alt="Logo SMKN 1" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 50%;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; line-height: 1.25;">
+                            <span style="font-weight: 800; color: #0f172a; font-size: 0.9rem; letter-spacing: -0.01em;">SMKN 1 Hiliran Gumanti</span>
+                            <span style="font-size: 0.7rem; color: #0f766e; font-weight: 700;">Sistem Pakar Karir C4.5</span>
+                        </div>
                     </div>
 
                     <!-- Navigation Menu -->
@@ -702,12 +736,8 @@
                 </div>
 
                 <div>
-                    <!-- Bottom Menu: Pengaturan & Keluar -->
+                    <!-- Bottom Menu: Keluar -->
                     <div style="border-top: 1px solid #e2e8f0; padding-top: 16px; display: flex; flex-direction: column; gap: 8px;">
-                        <a href="{{ route('dashboard') }}" class="sidebar-link {{ request()->is('settings*') ? 'active' : '' }}">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                            <span>Pengaturan</span>
-                        </a>
                         <form method="POST" action="{{ route('logout') }}" id="logout-form" style="display: none;">
                             @csrf
                         </form>

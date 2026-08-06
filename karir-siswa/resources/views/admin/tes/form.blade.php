@@ -1,13 +1,149 @@
 @extends('layouts.app', ['title' => $tes->exists ? 'Ubah Tes' : 'Tambah Tes'])
 
 @section('content')
-    <section class="panel" style="max-width:760px;margin:auto"><div class="panel-body"><p class="role-badge">Data Tes</p><h1>{{ $tes->exists ? 'Ubah Tes' : 'Tambah Tes' }}</h1>
-        <form method="POST" action="{{ $tes->exists ? route('admin.tes.update', $tes) : route('admin.tes.store') }}">@csrf @if($tes->exists) @method('PUT') @endif
-            <div class="field"><label for="nama_tes">Nama tes</label><input id="nama_tes" name="nama_tes" value="{{ old('nama_tes', $tes->nama_tes) }}" required>@error('nama_tes')<div class="error">{{ $message }}</div>@enderror</div>
-            <div class="field"><label for="deskripsi">Deskripsi</label><textarea id="deskripsi" name="deskripsi">{{ old('deskripsi', $tes->deskripsi) }}</textarea>@error('deskripsi')<div class="error">{{ $message }}</div>@enderror</div>
-            <div class="field"><label for="durasi_menit">Durasi (menit)</label><input id="durasi_menit" name="durasi_menit" type="number" min="1" value="{{ old('durasi_menit', $tes->durasi_menit) }}">@error('durasi_menit')<div class="error">{{ $message }}</div>@enderror</div>
-            <div class="field"><label for="status_aktif">Status</label><select id="status_aktif" name="status_aktif"><option value="1" @selected((string) old('status_aktif', (int) $tes->status_aktif) === '1')>Aktif</option><option value="0" @selected((string) old('status_aktif', (int) $tes->status_aktif) === '0')>Tidak aktif</option></select>@error('status_aktif')<div class="error">{{ $message }}</div>@enderror</div>
-            <div class="inline-actions"><button class="button">Simpan</button><a class="button secondary" href="{{ route('admin.tes.index') }}">Batal</a></div>
-        </form>
-    </div></section>
+    <style>
+        .btn-3d {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 0.875rem;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            transition: all 0.15s ease-in-out;
+            user-select: none;
+            line-height: 1.2;
+        }
+        .btn-3d:active {
+            transform: translateY(3px) !important;
+        }
+
+        .btn-3d-emerald {
+            background: linear-gradient(180deg, #34d399 0%, #059669 100%);
+            color: #ffffff !important;
+            box-shadow: 0 4px 0 #047857, 0 6px 14px rgba(5, 150, 105, 0.35);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .btn-3d-emerald:hover {
+            background: linear-gradient(180deg, #6ee7b7 0%, #047857 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #047857, 0 10px 18px rgba(5, 150, 105, 0.45);
+        }
+        .btn-3d-emerald:active {
+            box-shadow: 0 1px 0 #047857, 0 2px 4px rgba(5, 150, 105, 0.3);
+        }
+
+        .btn-3d-secondary {
+            background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%);
+            color: #475569 !important;
+            box-shadow: 0 3.5px 0 #cbd5e1, 0 4px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid #cbd5e1;
+        }
+        .btn-3d-secondary:hover {
+            background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 0 #94a3b8;
+            color: #0f172a !important;
+        }
+        .btn-3d-secondary:active {
+            box-shadow: 0 1px 0 #94a3b8;
+        }
+
+        .form-input {
+            width: 100%;
+            min-height: 44px;
+            padding: 10px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #0f172a;
+            background: #ffffff;
+            outline: none;
+            box-sizing: border-box;
+            transition: all 0.2s;
+        }
+        .form-input:focus {
+            border-color: #0f766e;
+            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
+        }
+    </style>
+
+    <div style="max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px;">
+        <!-- Back button & Breadcrumb -->
+        <div>
+            <a href="{{ route('admin.tes.index') }}" style="display: inline-flex; align-items: center; gap: 6px; color: #64748b; font-size: 0.875rem; font-weight: 700; text-decoration: none; transition: color 0.2s;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                Kembali ke Data Kuesioner Tes
+            </a>
+        </div>
+
+        <!-- Form Card Container -->
+        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); overflow: hidden;">
+            <div style="padding: 24px 32px; border-bottom: 1px solid #f1f5f9; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);">
+                <div style="display: inline-flex; align-items: center; gap: 6px; background: #f0fdf4; border: 1px solid #ccfbf1; color: #0f766e; font-size: 0.75rem; font-weight: 800; padding: 2px 10px; border-radius: 20px; text-transform: uppercase; margin-bottom: 6px;">
+                    Test Configuration
+                </div>
+                <h1 style="margin: 0; font-size: 1.5rem; font-weight: 800; color: #0f172a; letter-spacing: -0.02em;">
+                    {{ $tes->exists ? 'Ubah Informasi Kuesioner Tes' : 'Tambah Kuesioner Tes Baru' }}
+                </h1>
+            </div>
+
+            <div style="padding: 32px;">
+                <form method="POST" action="{{ $tes->exists ? route('admin.tes.update', $tes) : route('admin.tes.store') }}" style="display: flex; flex-direction: column; gap: 20px;">
+                    @csrf 
+                    @if($tes->exists) @method('PUT') @endif
+
+                    <!-- Nama Tes -->
+                    <div>
+                        <label for="nama_tes" style="display: block; font-size: 0.875rem; font-weight: 700; color: #334155; margin-bottom: 6px;">Nama Kuesioner Tes <span style="color:#ef4444;">*</span></label>
+                        <input id="nama_tes" name="nama_tes" class="form-input" value="{{ old('nama_tes', $tes->nama_tes) }}" required placeholder="Contoh: Kuesioner Minat Bakat Siswa 2026">
+                        @error('nama_tes')<div style="color:#ef4444; font-size:0.8rem; font-weight:600; margin-top:4px;">{{ $message }}</div>@enderror
+                    </div>
+
+                    <!-- Deskripsi -->
+                    <div>
+                        <label for="deskripsi" style="display: block; font-size: 0.875rem; font-weight: 700; color: #334155; margin-bottom: 6px;">Deskripsi Kuesioner</label>
+                        <textarea id="deskripsi" name="deskripsi" class="form-input" style="min-height: 90px; resize: vertical;" placeholder="Penjelasan mengenai tujuan dan petunjuk pengerjaan kuesioner ini...">{{ old('deskripsi', $tes->deskripsi) }}</textarea>
+                        @error('deskripsi')<div style="color:#ef4444; font-size:0.8rem; font-weight:600; margin-top:4px;">{{ $message }}</div>@enderror
+                    </div>
+
+                    <!-- Durasi Menit & Status Aktif -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                        <div>
+                            <label for="durasi_menit" style="display: block; font-size: 0.875rem; font-weight: 700; color: #334155; margin-bottom: 6px;">Durasi Pengerjaan (Menit)</label>
+                            <input id="durasi_menit" name="durasi_menit" type="number" min="1" class="form-input" value="{{ old('durasi_menit', $tes->durasi_menit) }}" placeholder="Contoh: 30">
+                            @error('durasi_menit')<div style="color:#ef4444; font-size:0.8rem; font-weight:600; margin-top:4px;">{{ $message }}</div>@enderror
+                        </div>
+
+                        <div>
+                            <label for="status_aktif" style="display: block; font-size: 0.875rem; font-weight: 700; color: #334155; margin-bottom: 6px;">Status Kuesioner <span style="color:#ef4444;">*</span></label>
+                            <select id="status_aktif" name="status_aktif" class="form-input">
+                                <option value="1" @selected((string) old('status_aktif', (int) $tes->status_aktif) === '1')>Aktif (Dapat Dikerjakan Siswa)</option>
+                                <option value="0" @selected((string) old('status_aktif', (int) $tes->status_aktif) === '0')>Tidak Aktif</option>
+                            </select>
+                            @error('status_aktif')<div style="color:#ef4444; font-size:0.8rem; font-weight:600; margin-top:4px;">{{ $message }}</div>@enderror
+                        </div>
+                    </div>
+
+                    <!-- 3D Action Buttons -->
+                    <div style="display: flex; gap: 12px; margin-top: 8px; padding-top: 20px; border-top: 1px solid #f1f5f9;">
+                        <button type="submit" class="btn-3d btn-3d-emerald">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                            <span>Simpan Kuesioner Tes</span>
+                        </button>
+
+                        <a href="{{ route('admin.tes.index') }}" class="btn-3d btn-3d-secondary">
+                            <span>Batal</span>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection

@@ -53,6 +53,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('hasil-tes', [TesController::class, 'hasilTes'])->name('tes.hasil-tes');
         Route::get('hasil-tes/{hasilTes}', [TesController::class, 'showHasilTes'])->name('tes.hasil-tes.show');
+        Route::get('hasil-tes/{hasilTes}/pdf', [TesController::class, 'exportPdfHasil'])->name('tes.hasil-tes.pdf');
+        Route::get('rekap-hasil/pdf', [TesController::class, 'exportPdfRekap'])->name('tes.rekap-hasil.pdf');
         Route::get('rekomendasi-karir', [TesController::class, 'rekomendasiKarir'])->name('tes.rekomendasi-karir');
 
         Route::resource('tes', TesController::class)->except('show');
@@ -81,5 +83,6 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/hasil-tes', [HasilTesController::class, 'index'])->name('hasil-tes.index');
         Route::get('/hasil-tes/{hasilTes}', [HasilTesController::class, 'show'])->name('hasil-tes.show');
+        Route::get('/hasil-tes/{hasilTes}/pdf', [HasilTesController::class, 'exportPdf'])->name('hasil-tes.pdf');
     });
 });

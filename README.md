@@ -3,12 +3,13 @@
 Sistem Pakar ini dirancang untuk mendeteksi kecocokan karir masa depan siswa berdasarkan kriteria Minat (RIASEC), Bakat (DAT), Nilai Akademik, dan Kepribadian (DISC) menggunakan algoritme klasifikasi C4.5.
 
 > [!NOTE]
-> **Status Proyek**: Baru sampai **Fase 3** (Siap untuk Seminar).
+> **Status Proyek**: **Fase 5 - Rekomendasi & Laporan Selesai** (Tahap Pengujian & Finalisasi Sistem).
 > Fitur yang telah selesai diuji:
 > 1. CRUD Master Data (Siswa, Kriteria, Opsi Kriteria, Karir).
 > 2. CRUD Data Latih/Training (Import Excel/CSV dan input manual).
-> 3. Modul Kuesioner Satu Halaman Dinamis (Admin dapat menentukan jumlah soal secara instan, serta menginput soal & pilihan jawaban sekaligus).
-> 4. Pengisian Kuesioner Siswa (Pencegahan retake/pengisian berulang, riwayat pengerjaan, dan rekap detail profil).
+> 3. Modul Kuesioner Dinamis Siswa & Rekap Profil.
+> 4. Mesin C4.5 FastAPI Engine (Entropy, Gain Ratio, Tree Builder, Classifier, Rule Extractor).
+> 5. Rekomendasi Karir Otomatis & Export Laporan PDF (Siswa & Guru BK).
 
 ---
 
@@ -24,26 +25,26 @@ Sistem Pakar ini dirancang untuk mendeteksi kecocokan karir masa depan siswa ber
 
 ## 🚀 Cara Menjalankan Aplikasi
 
-### 1. Aplikasi Laravel (karir-siswa)
+### 🔥 Cara Cepat (Jalankan Laravel & Engine Python Sekaligus dalam 1 Perintah)
+Cukup masuk ke folder `karir-siswa` dan jalankan:
 ```bash
 cd karir-siswa
-composer install
-npm install
-cp .env.example .env
-php artisan key:generate
+npm run dev:all
+```
+*(Atau menggunakan Composer: `composer run dev:all`)*
 
-# Konfigurasi Database di file .env Anda (DB_DATABASE, DB_USERNAME, DB_PASSWORD)
-# Jalankan migrasi dan seeder awal
-php artisan migrate --seed
-php artisan db:seed --class=KriteriaFinalSeeder
+---
 
-# Jalankan server
+### 🛠️ Cara Manual (Server Terpisah)
+
+#### 1. Aplikasi Laravel (karir-siswa)
+```bash
+cd karir-siswa
 php artisan serve
 ```
 
-### 2. Python Service (c45-service)
+#### 2. Python Service (c45-service)
 ```bash
 cd c45-service
-pip install -r requirements.txt
-uvicorn main:app --reload --port 8000
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --port 8001
 ```

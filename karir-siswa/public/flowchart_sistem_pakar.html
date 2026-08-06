@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagram Alur Workflows - Sistem Pakar C4.5 SMKN 1 Hiliran Gumanti</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Mermaid CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #0f766e;
+            --primary-dark: #0d9488;
+            --primary-light: #ccfbf1;
+            --dark: #0f172a;
+            --slate: #475569;
+            --light-bg: #f8fafc;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --accent-blue: #0284c7;
+            --accent-purple: #7c3aed;
+            --accent-amber: #d97706;
+            --accent-green: #059669;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark);
+            line-height: 1.6;
+            padding-bottom: 50px;
+        }
+
+        /* Top Banner Header */
+        .header-banner {
+            background: linear-gradient(135deg, #0f172a 0%, #0f766e 100%);
+            color: #ffffff;
+            padding: 35px 20px;
+            text-align: center;
+            box-shadow: 0 10px 25px -5px rgba(15, 118, 110, 0.25);
+            position: relative;
+        }
+
+        .header-banner h1 {
+            font-size: 24pt;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .header-banner p {
+            font-size: 11pt;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header-banner .badge-school {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(8px);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 9.5pt;
+            font-weight: 600;
+            margin-top: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Container & Grid Layout */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+            padding: 28px;
+            margin-bottom: 30px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--light-bg);
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+        }
+
+        .card-header .icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .card-header h2 {
+            font-size: 15pt;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        /* Diagram Box Styling */
+        .diagram-wrapper {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            overflow-x: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 250px;
+        }
+
+        /* Step Grid 5 Cards */
+        .step-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .step-card {
+            background: var(--light-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
+            position: relative;
+        }
+
+        .step-card .num {
+            width: 28px;
+            height: 28px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .step-card h4 {
+            font-size: 11pt;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 6px;
+        }
+
+        .step-card p {
+            font-size: 9.5pt;
+            color: var(--slate);
+            line-height: 1.4;
+        }
+
+        /* Print Button */
+        .action-bar {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 10pt;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(15, 118, 110, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        @media print {
+            .action-bar { display: none; }
+            body { background: white; padding: 0; }
+            .card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Banner Header -->
+    <div class="header-banner">
+        <h1>Diagram Alur Workflows Sistem Pakar C4.5</h1>
+        <p>Visualisasi Alur Kerja Penentuan Rekomendasi Karir Siswa Berbasis Algoritma C4.5</p>
+        <div class="badge-school">
+            <i class="fa-solid fa-school"></i> SMK Negeri 1 Hiliran Gumanti (TKJ · DPIB · K3R)
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Action Toolbar -->
+        <div class="action-bar">
+            <button class="btn btn-primary" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> Cetak / Simpan PDF
+            </button>
+        </div>
+
+        <!-- CARD 1: END-TO-END SYSTEM FLOWCHART -->
+        <div class="card">
+            <div class="card-header">
+                <div class="icon-box"><i class="fa-solid fa-diagram-project"></i></div>
+                <h2>1. Diagram Alur Utama (End-to-End System Flowchart)</h2>
+            </div>
+            <div class="diagram-wrapper">
+                <pre class="mermaid">
+                flowchart TD
+                    subgraph PERSIAPAN ["1. Tahap Persiapan & Pelatihan Model (Admin / Guru BK)"]
+                        A1["Mulai"] --> A2["Login Admin / Guru BK"]
+                        A2 --> A3["Input / Import Data Training Alumni<br/>(200 Row: Minat, Bakat, Kepribadian, Nilai)"]
+                        A3 --> A4["Klik 'Latih Pohon Keputusan C4.5'"]
+                        A4 --> A5["FastAPI C4.5 Engine Hitung:<br/>Entropy, Information Gain, Gain Ratio"]
+                        A5 --> A6["Pohon Keputusan (Decision Tree) &<br/>Rule C4.5 Tersimpan Aktif di Database"]
+                        A6 --> A7["Buat Kuesioner Terpadu Aktif<br/>(TKJ, DPIB, K3R)"]
+                    end
+
+                    subgraph PENGERJAAN ["2. Tahap Pengisian Kuesioner (Siswa)"]
+                        S1["Siswa Registrasi / Login"] --> S2{"Apakah Biodata<br/>Lengkap?"}
+                        S2 -- "Belum" --> S3["Lengkapi Biodata Diri<br/>(NIS, Kelas, Jurusan, Jenis Kelamin)"]
+                        S3 --> S4["Masuk Halaman Konsultasi Karir"]
+                        S2 -- "Sudah" --> S4
+                        S4 --> S5["Isi 16 Pertanyaan Kuesioner Psikotes<br/>(Minat, Bakat, Kepribadian, Nilai Akademik)"]
+                        S5 --> S6["Siswa Klik 'Kirim Jawaban'"]
+                    end
+
+                    subgraph PROSES_C45 ["3. Tahap Pemrosesan Algoritma C4.5 (System)"]
+                        P1["Sistem Simpan Jawaban Per Butir Soal<br/>ke Tabel 'hasil_tes_jawabans'"]
+                        S6 --> P1
+                        P1 --> P2["Sistem Hitung Skor Kriteria Dominan:<br/>• Minat (RIASEC)<br/>• Bakat (DAT)<br/>• Kepribadian (DISC)<br/>• Nilai Akademik"]
+                        P2 --> P3{"Apakah Service<br/>Python C4.5 Online?"}
+                        
+                        P3 -- "Ya" --> P4["FastAPI Classify Instance:<br/>Traverse Pohon Keputusan Active"]
+                        P4 --> P5["Menentukan Matched Rule &<br/>Persentase Kecocokan (%)"]
+                        
+                        P3 -- "Tidak (Offline)" --> P6["Simpan Jawaban ke Database<br/>(Graceful Fallback Mode)"]
+                    end
+
+                    subgraph OUTPUT ["4. Tahap Hasil & Pelaporan Kedinasan (BK & Siswa)"]
+                        P5 --> O1["Tampilkan Hasil Rekomendasi Karir Utama"]
+                        P6 --> O1
+                        O1 --> O2["Tampilkan Analisis Matched Rule C4.5"]
+                        O2 --> O3["Tampilkan Catatan Pembinaan Guru BK"]
+                        O3 --> O4["Tampilkan Tabel Riwayat Pilihan Jawaban<br/>Siswa Per Butir Soal"]
+                        O4 --> O5["Cetak Laporan PDF Kedinasan Kemendikbud<br/>(Lengkap Kop SMKN 1 & Tanda Tangan BK)"]
+                        O5 --> O6["Selesai"]
+                    end
+
+                    style A1 fill:#0f766e,color:#fff,stroke-width:0px
+                    style A6 fill:#059669,color:#fff,stroke-width:0px
+                    style S1 fill:#0284c7,color:#fff,stroke-width:0px
+                    style P4 fill:#7c3aed,color:#fff,stroke-width:0px
+                    style O5 fill:#d97706,color:#fff,stroke-width:0px
+                    style O6 fill:#0f172a,color:#fff,stroke-width:0px
+                </pre>
+            </div>
+        </div>
+
+        <!-- CARD 2: RINCIAN 5 TAHAP PROSES -->
+        <div class="card">
+            <div class="card-header">
+                <div class="icon-box"><i class="fa-solid fa-list-check"></i></div>
+                <h2>2. Rincian Tahapan Alur Kerja Sistem</h2>
+            </div>
+
+            <div class="step-grid">
+                <div class="step-card">
+                    <div class="num">1</div>
+                    <h4>Pelatihan Model C4.5</h4>
+                    <p>Admin/Guru BK mengimpor 200 data alumni. Mesin Python C4.5 menghitung Entropy & Gain Ratio untuk membangun Pohon Keputusan.</p>
+                </div>
+                <div class="step-card">
+                    <div class="num">2</div>
+                    <h4>Pengisian Kuesioner</h4>
+                    <p>Siswa mengisi 16 butir kuesioner psikotes terpadu untuk 3 jurusan (TKJ, DPIB, K3R) mencakup Minat, Bakat, Kepribadian & Nilai.</p>
+                </div>
+                <div class="step-card">
+                    <div class="num">3</div>
+                    <h4>Penyimpanan Per Butir</h4>
+                    <p>Setiap butir soal dan pilihan jawaban siswa tersimpan rinci ke tabel <code>hasil_tes_jawabans</code> untuk transparansi bimbingan BK.</p>
+                </div>
+                <div class="step-card">
+                    <div class="num">4</div>
+                    <h4>Klasifikasi Pakar C4.5</h4>
+                    <p>Atribut siswa ditelusuri di cabang Decision Tree untuk menghasilkan Rekomendasi Karir Utama & <i>Matched Rule</i> terpercaya.</p>
+                </div>
+                <div class="step-card">
+                    <div class="num">5</div>
+                    <h4>Cetak Laporan PDF</h4>
+                    <p>Laporan dicetak ber-Kop Resmi Kedinasan Kemendikbudristek & SMKN 1 Hiliran Gumanti lengkap dengan lembar pengesahan tanda tangan.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 3: SEQUENCE DIAGRAM PENGERJAAN & KLASIFIKASI -->
+        <div class="card">
+            <div class="card-header">
+                <div class="icon-box"><i class="fa-solid fa-gears"></i></div>
+                <h2>3. Diagram Urutan Pemrosesan Data (Sequence Diagram)</h2>
+            </div>
+            <div class="diagram-wrapper">
+                <pre class="mermaid">
+                sequenceDiagram
+                    autonumber
+                    actor Siswa as Siswa SMKN 1 Hiliran Gumanti
+                    participant Web as Web Laravel (Frontend/Backend)
+                    participant DB as MySQL Database
+                    participant Py as Python FastAPI C4.5 Engine
+
+                    Siswa->>Web: 1. Kirim Jawaban Kuesioner Psikotes (16 Soal)
+                    Web->>DB: 2. Simpan Riwayat Jawaban Per Butir Soal (`hasil_tes_jawabans`)
+                    Web->>Web: 3. Agregasi Skor Kriteria (Minat, Bakat, Kepribadian, Nilai)
+                    Web->>Py: 4. POST /classify (Kirim Atribut Siswa)
+                    Py->>DB: 5. Fetch Active Decision Tree Structure
+                    Py->>Py: 6. Traverse Pohon Keputusan C4.5 & Match Rules
+                    Py-->>Web: 7. Return Karir Terpilih, Kecocokan (%), & Rule Matched
+                    Web->>DB: 8. Simpan Rekomendasi Karir Siswa (`rekomendasi_karirs`)
+                    Web-->>Siswa: 9. Tampilkan Hasil Rekomendasi & Cetak PDF Laporan
+                </pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Initialize Mermaid -->
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'neutral',
+            securityLevel: 'loose',
+            flowchart: { curve: 'basis' }
+        });
+    </script>
+</body>
+</html>

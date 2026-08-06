@@ -30,6 +30,11 @@ class HasilTes extends Model
         return $this->hasMany(HasilTesDetail::class);
     }
 
+    public function jawabans(): HasMany
+    {
+        return $this->hasMany(HasilTesJawaban::class);
+    }
+
     public function rekomendasis(): HasMany
     {
         return $this->hasMany(RekomendasiKarir::class);
@@ -39,6 +44,7 @@ class HasilTes extends Model
     {
         static::deleting(function ($hasilTes) {
             $hasilTes->details()->delete();
+            $hasilTes->jawabans()->delete();
             $hasilTes->rekomendasis()->delete();
         });
     }

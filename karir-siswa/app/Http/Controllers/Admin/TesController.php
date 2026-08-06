@@ -94,7 +94,50 @@ class TesController extends Controller
 
     public function showHasilTes(\App\Models\HasilTes $hasilTes): View
     {
-        $hasilTes->load(['tes', 'siswa.user', 'details.kriteria', 'rekomendasis.karir']);
+        $hasilTes->load([
+            'tes',
+            'siswa.user',
+            'details.kriteria',
+            'jawabans.soal.kriteria',
+            'jawabans.pilihanJawaban.kriteriaOpsi',
+            'rekomendasis.karir'
+        ]);
         return view('admin.tes.show_hasil', compact('hasilTes'));
+    }
+
+    public function exportPdfHasil(\App\Models\HasilTes $hasilTes)
+    {
+        $hasilTes->load([
+            'tes',
+            'siswa.user',
+            'details.kriteria',
+            'jawabans.soal.kriteria',
+            'jawabans.pilihanJawaban.kriteriaOpsi',
+            'rekomendasis.karir'
+        ]);
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.laporan_siswa', compact('hasilTes'));
+
+        $filename = 'Laporan_Hasil_Tes_' . str_replace(' ', '_', $hasilTes->siswa->user->name ?? 'Siswa') . '.pdf';
+        return $pdf->download($filename);
+    }
+
+    public function exportPdfRekap(Request $request)
+    {
+        $search = trim((string) $request->string('q'));
+        $hasilTes = \App\Models\HasilTes::with(['siswa.user', 'tes', 'rekomendasis.karir'])
+            ->when($search !== '', function ($query) use ($search) {
+                $query->whereHas('siswa.user', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                })->orWhereHas('tes', function ($q) use ($search) {
+                    $q->where('nama_tes', 'like', "%{$search}%");
+                });
+            })
+            ->latest('tanggal_tes')
+            ->get();
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.rekap_hasil', compact('hasilTes'))->setPaper('a4', 'landscape');
+
+        return $pdf->download('Rekapitulasi_Hasil_Tes_Karir_Siswa.pdf');
     }
 }

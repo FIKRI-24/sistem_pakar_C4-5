@@ -75,6 +75,12 @@ class KonsultasiController extends Controller
                 $kriteria = $soal->kriteria;
                 if ($kriteria->tipe_data === Kriteria::TYPE_NUMERIK) {
                     $numericKriterias[$kriteria->id] = $kriteria;
+                    $nilaiNum = (float) $request->input("nilai_numerik.{$kriteria->id}");
+                    $hasilTes->jawabans()->create([
+                        'soal_id' => $soal->id,
+                        'jawaban_teks' => (string) $nilaiNum,
+                        'skor' => $nilaiNum,
+                    ]);
 
                     continue;
                 }
@@ -87,10 +93,19 @@ class KonsultasiController extends Controller
                     ];
                 }
                 $pilihan = $soal->pilihanJawabans->firstWhere('id', (int) $request->input("jawabans.{$soal->id}"));
-                $score = &$scores[$kriteria->id][$pilihan->kriteria_opsi_id];
-                $score['total'] += (float) $pilihan->skor;
-                $score['first_question_order'] ??= $soal->urutan ?? $soal->id;
-                unset($score);
+                if ($pilihan) {
+                    $score = &$scores[$kriteria->id][$pilihan->kriteria_opsi_id];
+                    $score['total'] += (float) $pilihan->skor;
+                    $score['first_question_order'] ??= $soal->urutan ?? $soal->id;
+                    unset($score);
+
+                    $hasilTes->jawabans()->create([
+                        'soal_id' => $soal->id,
+                        'pilihan_jawaban_id' => $pilihan->id,
+                        'jawaban_teks' => $pilihan->pilihan,
+                        'skor' => $pilihan->skor,
+                    ]);
+                }
             }
 
             foreach ($scores as $kriteriaId => $optionScores) {
@@ -123,7 +138,27 @@ class KonsultasiController extends Controller
             return $hasilTes;
         });
 
-        return to_route('siswa.hasil-tes.show', $hasilTes)->with('success', 'Kuesioner berhasil disimpan.');
+        try {
+            $formatter = app(\App\Services\C45DataFormatter::class);
+            $client = app(\App\Services\C45Client::class);
+
+            $attributes = $formatter->fromHasilTes($hasilTes);
+            $recommendation = $client->classify($attributes);
+
+            $hasilTes->rekomendasis()->create([
+                'karir_id' => $recommendation['karir_id'],
+                'persen_kecocokan' => $recommendation['persen_kecocokan'],
+                'alasan' => $recommendation['alasan'],
+            ]);
+
+            return to_route('siswa.hasil-tes.show', $hasilTes)
+                ->with('success', 'Kuesioner berhasil disimpan dan rekomendasi karir telah dihitung.');
+        } catch (\Throwable $e) {
+            logger()->error('C4.5 Classification failed: ' . $e->getMessage());
+
+            return to_route('siswa.hasil-tes.show', $hasilTes)
+                ->with('success', 'Kuesioner berhasil disimpan. Rekomendasi karir belum dapat dihitung karena sistem C4.5 sedang offline.');
+        }
     }
 
     private function siswa(int $userId): Siswa

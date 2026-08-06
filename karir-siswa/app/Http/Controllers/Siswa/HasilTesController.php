@@ -26,9 +26,34 @@ class HasilTesController extends Controller
     {
         $siswa = $this->siswa($request->user()->id);
         abort_unless($hasilTes->siswa_id === $siswa->id, 404);
-        $hasilTes->load(['tes', 'details.kriteria', 'rekomendasis.karir']);
+        $hasilTes->load([
+            'tes',
+            'details.kriteria',
+            'jawabans.soal.kriteria',
+            'jawabans.pilihanJawaban.kriteriaOpsi',
+            'rekomendasis.karir'
+        ]);
 
         return view('siswa.hasil-tes.show', compact('hasilTes'));
+    }
+
+    public function exportPdf(Request $request, HasilTes $hasilTes)
+    {
+        $siswa = $this->siswa($request->user()->id);
+        abort_unless($hasilTes->siswa_id === $siswa->id, 404);
+        $hasilTes->load([
+            'tes',
+            'siswa.user',
+            'details.kriteria',
+            'jawabans.soal.kriteria',
+            'jawabans.pilihanJawaban.kriteriaOpsi',
+            'rekomendasis.karir'
+        ]);
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.laporan_siswa', compact('hasilTes'));
+        
+        $filename = 'Laporan_Hasil_Tes_' . str_replace(' ', '_', $hasilTes->siswa->user->name ?? 'Siswa') . '.pdf';
+        return $pdf->download($filename);
     }
 
     private function siswa(int $userId): Siswa

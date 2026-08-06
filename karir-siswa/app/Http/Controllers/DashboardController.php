@@ -89,6 +89,7 @@ class DashboardController extends Controller
         $kecocokanCount = 0;
 
         $tesTerbaru = [];
+        $distribusiKarir = [];
 
         try {
             $totalSiswa = Siswa::count();
@@ -115,37 +116,29 @@ class DashboardController extends Controller
                         'status' => 'Selesai'
                     ];
                 })->all();
+
+            // Real-time Career Recommendation Distribution
+            $rawDistribusi = RekomendasiKarir::query()
+                ->selectRaw('karir_id, COUNT(*) as total')
+                ->groupBy('karir_id')
+                ->with('karir')
+                ->get();
+
+            $totalRekomendasiReal = $rawDistribusi->sum('total');
+
+            if ($totalRekomendasiReal > 0) {
+                $distribusiKarir = $rawDistribusi->map(function ($item) use ($totalRekomendasiReal) {
+                    $namaKarir = $item->karir->nama_karir ?? ('Karir #' . $item->karir_id);
+                    $percentage = round(($item->total / $totalRekomendasiReal) * 100, 1);
+                    return [
+                        'nama_karir' => $namaKarir,
+                        'total' => (int) $item->total,
+                        'persen' => $percentage,
+                    ];
+                })->sortByDesc('total')->values()->all();
+            }
         } catch (\Throwable $e) {
-            // Silently catch database errors during tests that run without migrated tables
-        }
-
-        // Fallbacks for empty database or test environments to match proposal screenshot values
-        if ($totalSiswa === 0) {
-            $totalSiswa = 128;
-        }
-        if ($tesDilakukan === 0) {
-            $tesDilakukan = 85;
-            $hasilTesCount = 85;
-            $rekomendasiCount = 63;
-        }
-
-        // Fallbacks for Pie Chart to match proposal screenshot values
-        if ($minatCount === 0 && $bakatCount === 0 && $kepribadianCount === 0 && $kecocokanCount === 0) {
-            $minatCount = 30;
-            $bakatCount = 20;
-            $kepribadianCount = 18;
-            $kecocokanCount = 17;
-        }
-
-        // Fallbacks for Latest Tests Table
-        if (empty($tesTerbaru)) {
-            $tesTerbaru = [
-                ['nama_siswa' => 'Andi Pratama', 'jenis_tes' => 'Tes Minat', 'tanggal' => '06/05/2024', 'status' => 'Selesai'],
-                ['nama_siswa' => 'Siti Aisyah', 'jenis_tes' => 'Tes Bakat', 'tanggal' => '06/05/2024', 'status' => 'Selesai'],
-                ['nama_siswa' => 'Rizky Maulana', 'jenis_tes' => 'Tes Kepribadian', 'tanggal' => '05/05/2024', 'status' => 'Selesai'],
-                ['nama_siswa' => 'Dewi Lestari', 'jenis_tes' => 'Tes Kecocokan Karir', 'tanggal' => '05/05/2024', 'status' => 'Selesai'],
-                ['nama_siswa' => 'Fahri Ramadhan', 'jenis_tes' => 'Tes Minat', 'tanggal' => '04/05/2024', 'status' => 'Selesai'],
-            ];
+            // Silently catch database errors
         }
 
         return [
@@ -158,6 +151,7 @@ class DashboardController extends Controller
             'kepribadianCount' => $kepribadianCount,
             'kecocokanCount' => $kecocokanCount,
             'tesTerbaru' => $tesTerbaru,
+            'distribusiKarir' => $distribusiKarir,
         ];
     }
 }

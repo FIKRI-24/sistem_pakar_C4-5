@@ -113,11 +113,15 @@
 
     <div class="login-container">
         <div class="login-header">
-            <div class="school-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-graduation-cap"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+            <div style="width: 80px; height: 80px; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); padding: 4px;">
+                <img src="{{ asset('images/logo-smkn1.jpg') }}" alt="Logo SMKN 1 Hiliran Gumanti" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 50%;">
             </div>
-            <h1>Daftar Akun Siswa</h1>
-            <p>Silakan lengkapi form berikut untuk membuat akun baru</p>
+            <h1 style="margin: 0 0 4px; font-size: 1.35rem; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; text-transform: uppercase;">
+                SMKN 1 Hiliran Gumanti
+            </h1>
+            <p style="margin: 0; font-size: 0.85rem; color: #ccfbf1; font-weight: 600;">
+                Pendaftaran Akun Siswa Baru
+            </p>
         </div>
 
         <div class="login-body">

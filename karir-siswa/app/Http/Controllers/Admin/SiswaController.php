@@ -45,10 +45,10 @@ class SiswaController extends Controller
     {
         DB::transaction(function () use ($request) {
             $user = User::create([
-                'name' => $request->string('name'),
-                'username' => $request->string('username'),
-                'email' => $request->string('email'),
-                'password' => $request->string('password'),
+                'name' => $request->string('name')->value(),
+                'username' => $request->string('username')->value(),
+                'email' => $request->filled('email') ? $request->string('email')->value() : null,
+                'password' => $request->string('password')->value(),
                 'role' => User::ROLE_SISWA,
             ]);
             $user->siswa()->create($request->safe()->only(['nis', 'kelas', 'jurusan', 'jenis_kelamin']));
@@ -67,9 +67,13 @@ class SiswaController extends Controller
     public function update(SiswaRequest $request, Siswa $siswa): RedirectResponse
     {
         DB::transaction(function () use ($request, $siswa) {
-            $userData = $request->safe()->only(['name', 'username', 'email']);
+            $userData = [
+                'name' => $request->string('name')->value(),
+                'username' => $request->string('username')->value(),
+                'email' => $request->filled('email') ? $request->string('email')->value() : null,
+            ];
             if ($request->filled('password')) {
-                $userData['password'] = $request->string('password');
+                $userData['password'] = $request->string('password')->value();
             }
             $siswa->user->update($userData);
             $siswa->update($request->safe()->only(['nis', 'kelas', 'jurusan', 'jenis_kelamin']));
