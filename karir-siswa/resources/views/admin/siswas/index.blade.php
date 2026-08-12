@@ -202,10 +202,6 @@
                                             <strong style="font-size: 0.95rem; font-weight: 800; color: #0f172a; display: block; margin-bottom: 2px;">{{ $siswa->user->name }}</strong>
                                             <span style="font-size: 0.8rem; font-weight: 600; color: #64748b; display: flex; align-items: center; gap: 6px;">
                                                 <span>@<span>{{ $siswa->user->username }}</span></span>
-                                                @if($siswa->user->email)
-                                                    <span style="color: #cbd5e1;">•</span>
-                                                    <span>{{ $siswa->user->email }}</span>
-                                                @endif
                                             </span>
                                         </div>
                                     </div>

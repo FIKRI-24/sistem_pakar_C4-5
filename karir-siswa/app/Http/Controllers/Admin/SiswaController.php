@@ -25,8 +25,7 @@ class SiswaController extends Controller
                         ->orWhere('jurusan', 'like', "%{$search}%")
                         ->orWhereHas('user', fn ($user) => $user
                             ->where('name', 'like', "%{$search}%")
-                            ->orWhere('username', 'like', "%{$search}%")
-                            ->orWhere('email', 'like', "%{$search}%"));
+                            ->orWhere('username', 'like', "%{$search}%"));
                 });
             })
             ->latest()
@@ -47,7 +46,6 @@ class SiswaController extends Controller
             $user = User::create([
                 'name' => $request->string('name')->value(),
                 'username' => $request->string('username')->value(),
-                'email' => $request->filled('email') ? $request->string('email')->value() : null,
                 'password' => $request->string('password')->value(),
                 'role' => User::ROLE_SISWA,
             ]);
@@ -70,7 +68,6 @@ class SiswaController extends Controller
             $userData = [
                 'name' => $request->string('name')->value(),
                 'username' => $request->string('username')->value(),
-                'email' => $request->filled('email') ? $request->string('email')->value() : null,
             ];
             if ($request->filled('password')) {
                 $userData['password'] = $request->string('password')->value();

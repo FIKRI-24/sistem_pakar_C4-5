@@ -113,7 +113,6 @@ class SiswaSelfRegisterAndBiodataGateTest extends TestCase
         $this->actingAs($admin)->post(route('admin.siswas.store'), [
             'name' => 'Siswa Baru Admin',
             'username' => 'siswa_admin',
-            'email' => 'admin_student@example.com',
             'password' => 'password123',
             'nis' => '2026111',
             'kelas' => 'XII TKJ 1',
@@ -129,7 +128,6 @@ class SiswaSelfRegisterAndBiodataGateTest extends TestCase
         $this->actingAs($admin)->put(route('admin.siswas.update', $siswa), [
             'name' => 'Siswa Baru Admin Updated',
             'username' => 'siswa_admin',
-            'email' => 'admin_student@example.com',
             'password' => '',
             'nis' => '2026111',
             'kelas' => 'XII TKJ 1',

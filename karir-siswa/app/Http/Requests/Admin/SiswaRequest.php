@@ -23,7 +23,6 @@ class SiswaRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:100'],
             'username' => ['required', 'string', 'alpha_dash', 'max:50', Rule::unique('users')->ignore($userId)],
-            'email' => ['nullable', 'email', 'max:100', Rule::unique('users')->ignore($userId)],
             'password' => $passwordRules,
             'nis' => ['required', 'string', 'max:20', Rule::unique('siswas')->ignore($siswa)],
             'kelas' => ['required', 'string', 'max:20'],

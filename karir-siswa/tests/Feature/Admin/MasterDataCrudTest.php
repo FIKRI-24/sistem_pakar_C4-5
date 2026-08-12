@@ -30,7 +30,6 @@ class MasterDataCrudTest extends TestCase
         $this->actingAs($admin)->post(route('admin.siswas.store'), [
             'name' => 'Siswa Baru',
             'username' => 'siswa_baru',
-            'email' => 'baru@example.com',
             'password' => 'password123',
             'nis' => '2026001',
             'kelas' => 'XII TKJ 1',
@@ -45,7 +44,6 @@ class MasterDataCrudTest extends TestCase
         $this->actingAs($admin)->put(route('admin.siswas.update', $siswa), [
             'name' => 'Siswa Diperbarui',
             'username' => 'siswa_baru',
-            'email' => 'baru@example.com',
             'password' => '',
             'nis' => '2026001',
             'kelas' => 'XII TKJ 2',

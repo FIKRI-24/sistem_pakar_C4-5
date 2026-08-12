@@ -33,7 +33,6 @@ class EndToEndFase1To3Test extends TestCase
         $this->post(route('admin.siswas.store'), [
             'name' => 'Siswa Uji Otomatis',
             'username' => 'siswa_uji_otomatis',
-            'email' => 'siswa_uji_otomatis@karirsiswa.test',
             'password' => 'password',
             'nis' => $nis,
             'kelas' => 'XII TKJ 1',

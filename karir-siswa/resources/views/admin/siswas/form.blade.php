@@ -147,13 +147,6 @@
                             @error('jenis_kelamin')<div style="color:#ef4444; font-size:0.8rem; font-weight:600; margin-top:4px;">{{ $message }}</div>@enderror
                         </div>
 
-                        <!-- Email -->
-                        <div>
-                            <label for="email" style="display: block; font-size: 0.875rem; font-weight: 700; color: #334155; margin-bottom: 6px;">Email Akun (Opsional)</label>
-                            <input id="email" name="email" type="email" class="form-input" value="{{ old('email', $user?->email) }}" placeholder="siswa@sekolah.sch.id">
-                            @error('email')<div style="color:#ef4444; font-size:0.8rem; font-weight:600; margin-top:4px;">{{ $message }}</div>@enderror
-                        </div>
-
                         <!-- Password -->
                         <div>
                             <label for="password" style="display: block; font-size: 0.875rem; font-weight: 700; color: #334155; margin-bottom: 6px;">
