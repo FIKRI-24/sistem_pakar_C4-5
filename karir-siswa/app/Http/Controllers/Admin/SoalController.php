@@ -43,7 +43,7 @@ class SoalController extends Controller
     {
         Soal::create($request->validated());
 
-        return to_route('admin.soals.index')->with('success', 'Pertanyaan berhasil ditambahkan.');
+        return to_route('admin.soals.index')->with('success', 'Soal berhasil ditambahkan.');
     }
 
     public function edit(Soal $soal): View
@@ -55,14 +55,14 @@ class SoalController extends Controller
     {
         $soal->update($request->validated());
 
-        return to_route('admin.soals.index')->with('success', 'Pertanyaan berhasil diperbarui.');
+        return to_route('admin.soals.index')->with('success', 'Soal berhasil diperbarui.');
     }
 
     public function destroy(Soal $soal): RedirectResponse
     {
         $soal->delete();
 
-        return to_route('admin.soals.index')->with('success', 'Pertanyaan berhasil dihapus.');
+        return to_route('admin.soals.index')->with('success', 'Soal berhasil dihapus.');
     }
 
     /** @return array<string, mixed> */
