@@ -1,0 +1,8 @@
+[variables]
+NIXPACKS_PHP_EXTENSIONS = "pdo_mysql,gd,zip,mbstring,bcmath,xml,curl,tokenizer,ctype,dom,fileinfo,filter,hash,openssl,pcre,pdo,session"
+COMPOSER_IGNORE_PLATFORM_REQS = "1"
+
+[phases.install]
+cmds = [
+    "composer install --no-dev --optimize-autoloader --ignore-platform-reqs"
+]
