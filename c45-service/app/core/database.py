@@ -1,3 +1,4 @@
+import os
 import urllib.parse
 from typing import Generator
 from sqlalchemy import create_engine
@@ -6,20 +7,35 @@ from app.core.config import get_settings
 
 settings = get_settings()
 
-# Build MySQL connection string
-password_encoded = urllib.parse.quote_plus(settings.db_password) if settings.db_password else ""
-if password_encoded:
-    DATABASE_URL = (
-        f"mysql+pymysql://{settings.db_username}:{password_encoded}"
-        f"@{settings.db_host}:{settings.db_port}/{settings.db_database}"
-        f"?charset=utf8mb4"
-    )
+# Check for explicit DATABASE_URL or MYSQL_URL
+raw_url = os.getenv("DATABASE_URL") or os.getenv("MYSQL_URL") or os.getenv("MYSQL_PRIVATE_URL")
+
+if raw_url:
+    if raw_url.startswith("mysql://"):
+        DATABASE_URL = raw_url.replace("mysql://", "mysql+pymysql://", 1)
+    else:
+        DATABASE_URL = raw_url
 else:
-    DATABASE_URL = (
-        f"mysql+pymysql://{settings.db_username}"
-        f"@{settings.db_host}:{settings.db_port}/{settings.db_database}"
-        f"?charset=utf8mb4"
-    )
+    # Build MySQL connection string with fallback environment variables
+    db_user = os.getenv("C45_DB_USERNAME") or os.getenv("DB_USERNAME") or os.getenv("DB_USER") or os.getenv("MYSQLUSER") or settings.db_username
+    db_pass = os.getenv("C45_DB_PASSWORD") or os.getenv("DB_PASSWORD") or os.getenv("MYSQLPASSWORD") or settings.db_password
+    db_host = os.getenv("C45_DB_HOST") or os.getenv("DB_HOST") or os.getenv("MYSQLHOST") or settings.db_host
+    db_port = os.getenv("C45_DB_PORT") or os.getenv("DB_PORT") or os.getenv("MYSQLPORT") or str(settings.db_port)
+    db_name = os.getenv("C45_DB_DATABASE") or os.getenv("DB_DATABASE") or os.getenv("DB_NAME") or os.getenv("MYSQLDATABASE") or settings.db_database
+
+    password_encoded = urllib.parse.quote_plus(db_pass) if db_pass else ""
+    if password_encoded:
+        DATABASE_URL = (
+            f"mysql+pymysql://{db_user}:{password_encoded}"
+            f"@{db_host}:{db_port}/{db_name}"
+            f"?charset=utf8mb4"
+        )
+    else:
+        DATABASE_URL = (
+            f"mysql+pymysql://{db_user}"
+            f"@{db_host}:{db_port}/{db_name}"
+            f"?charset=utf8mb4"
+        )
 
 engine = create_engine(
     DATABASE_URL,
@@ -38,3 +54,4 @@ def get_db() -> Generator:
         yield db
     finally:
         db.close()
+
