@@ -132,7 +132,14 @@
                         <!-- Jurusan -->
                         <div>
                             <label for="jurusan" style="display: block; font-size: 0.875rem; font-weight: 700; color: #334155; margin-bottom: 6px;">Jurusan <span style="color:#ef4444;">*</span></label>
-                            <input id="jurusan" name="jurusan" class="form-input" value="{{ old('jurusan', $siswa->jurusan) }}" required placeholder="Contoh: IPA / Rekayasa Perangkat Lunak">
+                            <select id="jurusan" name="jurusan" class="form-input" required>
+                                <option value="">-- Pilih Jurusan Siswa --</option>
+                                @foreach(\App\Models\Siswa::JURUSAN_OPTIONS as $val => $label)
+                                    <option value="{{ $val }}" {{ old('jurusan', $siswa->jurusan) === $val ? 'selected' : '' }}>
+                                        {{ $label }}
+                                    </option>
+                                @endforeach
+                            </select>
                             @error('jurusan')<div style="color:#ef4444; font-size:0.8rem; font-weight:600; margin-top:4px;">{{ $message }}</div>@enderror
                         </div>
 

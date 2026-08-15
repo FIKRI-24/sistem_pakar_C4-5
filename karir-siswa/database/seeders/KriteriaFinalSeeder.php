@@ -47,10 +47,13 @@ class KriteriaFinalSeeder extends Seeder
             $kriteria->save();
             $kriteria->restore();
 
-            $kriteria->opsis()->delete();
             foreach ($definition['opsi'] as $index => $label) {
-                $kriteria->opsis()->create(['label' => $label, 'urutan' => $index + 1]);
+                $kriteria->opsis()->updateOrCreate(
+                    ['label' => $label],
+                    ['urutan' => $index + 1]
+                );
             }
+            $kriteria->opsis()->whereNotIn('label', $definition['opsi'])->delete();
         }
     }
 }

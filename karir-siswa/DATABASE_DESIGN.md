@@ -29,17 +29,14 @@ Karena client menyerahkan keputusan teknis sepenuhnya, skema berikut dipilih ber
 
 **Skala skor jawaban kuesioner:** Likert 1-5 per pertanyaan, dijumlah/dirata-rata per kriteria untuk menentukan kategori/nilai akhir kriteria tersebut.
 
-**Daftar Alternatif Karir (8 kelas target, mewakili tiap tipe RIASEC):**
-1. Teknisi/Operator Teknik (Realistic)
-2. Analis/Peneliti (Investigative)
-3. Desainer Kreatif (Artistic)
-4. Tenaga Kesehatan & Konseling (Social)
-5. Wirausaha/Marketing (Enterprising)
-6. Administrasi & Akuntansi (Conventional)
-7. Pendidik/Guru (Social/Investigative)
-8. Agribisnis/Pertanian (Realistic — relevan dengan konteks daerah agraris; sesuaikan bila jurusan riil SMKN 1 Hiliran Gumanti berbeda)
+**Daftar Alternatif Karir & Studi Lanjut (30 kelas target — 3 Jurusan SMK + Umum + Kuliah):**
+- **DPIB (6):** Drafter Bangunan, Desainer Bangunan, BIM Modeler, Surveyor, Estimator/Quantity Surveyor, Pengawas Konstruksi
+- **TKJ (7):** Network Administrator, IT Support Specialist, Teknisi Fiber Optic, Junior System Administrator, Teknisi CCTV & IoT, Field Technician ISP, Wirausaha Jasa IT (Technopreneur)
+- **Kriya Kayu (6):** Desainer Furnitur & Mebel Kayu, Pengrajin Kriya Kayu & Ukir (Wood Artisan), Operator Mesin Woodworking / CNC Kayu, Finishing Specialist Kayu (Wood Finisher), Wirausaha Kriya Kayu (Woodcraft Entrepreneur), Quality Control (QC) Produk Kayu & Mebel
+- **Umum / Kedinasan (4):** Polisi, TNI, Banker, Pebisnis
+- **Studi Lanjut / Jurusan Kuliah (7):** Kuliah: Teknik / Informatika, Kuliah: Ekonomi / Manajemen, Kuliah: Pendidikan (Keguruan), Kuliah: Ilmu Hukum, Kuliah: Desain / Arsitektur, Kuliah: Pertanian / Agroteknologi, Kuliah: Ilmu Komunikasi
 
-**Data Training:** karena data riil belum terkumpul saat pengembangan dimulai, dataset awal (60-100 baris) dibangun semi-sintetis mengikuti logika domain yang masuk akal (bukan random), didokumentasikan secara eksplisit sebagai "data awal representatif" di README. **Rekomendasi:** sebelum sidang akhir (bukan sidang proposal), dorong pengumpulan data riil dari Guru BK agar angka akurasi di Bab IV kredibel — data sintetis cukup untuk tahap pengembangan & seminar proposal, tapi sebaiknya tidak jadi dasar klaim akurasi final.
+**Data Training:** Dataset awal (240 baris, 8 variasi per karir) dibangun semi-sintetis mengikuti logika domain yang masuk akal (bukan random), didokumentasikan secara eksplisit sebagai "data awal representatif" di README. **Rekomendasi:** sebelum sidang akhir (bukan sidang proposal), dorong pengumpulan data riil dari Guru BK agar angka akurasi di Bab IV kredibel — data sintetis cukup untuk tahap pengembangan & seminar proposal, tapi sebaiknya tidak jadi dasar klaim akurasi final.
 
 
 
@@ -105,7 +102,7 @@ Karena client menyerahkan keputusan teknis sepenuhnya, skema berikut dipilih ber
 | informasi_pendukung | TEXT, nullable | |
 | deleted_at | TIMESTAMP, nullable | |
 
-> **Seeder final (8 karir):** Teknisi/Operator Teknik, Analis/Peneliti, Desainer Kreatif, Tenaga Kesehatan & Konseling, Wirausaha/Marketing, Administrasi & Akuntansi, Pendidik/Guru, Agribisnis/Pertanian. Lihat rasional pemilihan di bagian 0.1.
+> **Seeder final (30 karir):** 6 DPIB, 7 TKJ, 6 Kriya Kayu, 4 Umum/Kedinasan, dan 7 Studi Lanjut (Jurusan Kuliah). Lihat rincian di bagian 0.1.
 
 ---
 

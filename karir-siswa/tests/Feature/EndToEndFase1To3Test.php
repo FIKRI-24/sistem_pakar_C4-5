@@ -57,8 +57,8 @@ class EndToEndFase1To3Test extends TestCase
 
         // Step 3: verify the seeded master and training data remain consistent.
         $this->assertDatabaseCount('kriterias', 4);
-        $this->assertDatabaseCount('karirs', 8);
-        $this->assertDatabaseCount('data_trainings', 64);
+        $this->assertDatabaseCount('karirs', 30);
+        $this->assertDatabaseCount('data_trainings', 240);
 
         // Step 4: Guru BK can access all assessment management pages.
         $this->post(route('logout'))->assertRedirect(route('login'));
@@ -79,13 +79,13 @@ class EndToEndFase1To3Test extends TestCase
 
         // Step 6: the active seeded test, questions, and choices are visible.
         $this->get(route('siswa.konsultasi.index'))->assertOk()
-            ->assertSee('Tes Potensi Karir #1');
+            ->assertSee('Tes Asesmen Potensi Karir Siswa SMK (TKJ, DPIB, Kriya Kayu)');
 
-        $tes = Tes::query()->where('nama_tes', 'Tes Potensi Karir #1')->firstOrFail();
+        $tes = Tes::query()->where('nama_tes', 'Tes Asesmen Potensi Karir Siswa SMK (TKJ, DPIB, Kriya Kayu)')->firstOrFail();
 
         $consultationPage = $this->get(route('siswa.konsultasi.show', $tes));
         $consultationPage->assertOk()
-            ->assertSee('Merakit komputer, memasang jaringan kabel LAN, atau merawat perangkat keras (TKJ).')
+            ->assertSee('Merakit dan menginstalasi perangkat keras komputer atau memasang kabel jaringan LAN (TKJ).')
             ->assertSee('Sangat Suka')
             ->assertDontSee('Pilihan jawaban belum tersedia untuk soal ini.');
 

@@ -39,7 +39,7 @@ class DataTrainingCrudTest extends TestCase
 
         $this->actingAs($admin)->post(route('admin.data-trainings.store'), [
             'sumber' => 'Wawancara internal',
-            'label_karir_id' => Karir::where('nama_karir', 'Analis/Peneliti')->firstOrFail()->id,
+            'label_karir_id' => Karir::where('nama_karir', 'Network Administrator')->firstOrFail()->id,
             'atributs' => $attributes,
         ])->assertRedirect(route('admin.data-trainings.index'));
 
@@ -48,7 +48,7 @@ class DataTrainingCrudTest extends TestCase
 
         $this->actingAs($admin)->put(route('admin.data-trainings.update', $training), [
             'sumber' => 'Wawancara diperbarui',
-            'label_karir_id' => Karir::where('nama_karir', 'Analis/Peneliti')->firstOrFail()->id,
+            'label_karir_id' => Karir::where('nama_karir', 'Network Administrator')->firstOrFail()->id,
             'atributs' => $this->attributes('Investigative', 'Numerik/Logika', 92, 'Compliance'),
         ])->assertRedirect(route('admin.data-trainings.index'));
         $this->assertDatabaseHas('data_training_atributs', ['data_training_id' => $training->id, 'nilai_numerik' => 92]);
@@ -62,7 +62,7 @@ class DataTrainingCrudTest extends TestCase
         $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
         $csv = implode("\n", [
             'sumber,label_karir,minat,bakat,nilai_akademik,kepribadian',
-            'Import CSV,Analis/Peneliti,Investigative,Numerik/Logika,89,Compliance',
+            'Import CSV,Network Administrator,Investigative,Numerik/Logika,89,Compliance',
         ]);
         $csvFile = UploadedFile::fake()->createWithContent('training.csv', $csv);
 
@@ -74,7 +74,7 @@ class DataTrainingCrudTest extends TestCase
         $spreadsheet = new Spreadsheet;
         $spreadsheet->getActiveSheet()->fromArray([
             ['sumber', 'label_karir', 'minat', 'bakat', 'nilai_akademik', 'kepribadian'],
-            ['Import XLSX', 'Desainer Kreatif', 'Artistic', 'Spasial/Visual', 82, 'Influence'],
+            ['Import XLSX', 'Desainer Bangunan', 'Artistic', 'Spasial/Visual', 82, 'Influence'],
         ]);
         (new Xlsx($spreadsheet))->save($path);
         $xlsxFile = new UploadedFile(
@@ -96,7 +96,7 @@ class DataTrainingCrudTest extends TestCase
         $admin = User::factory()->create(['role' => User::ROLE_ADMIN]);
         $csv = implode("\n", [
             'label_karir,minat,bakat,nilai_akademik,kepribadian',
-            'Analis/Peneliti,Investigative,Numerik/Logika,89,Compliance',
+            'Network Administrator,Investigative,Numerik/Logika,89,Compliance',
             'Karir Salah,Realistic,Motorik/Praktikal,75,Steadiness',
         ]);
 

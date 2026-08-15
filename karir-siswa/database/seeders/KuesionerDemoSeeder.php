@@ -20,90 +20,116 @@ class KuesionerDemoSeeder extends Seeder
     public function run(): void
     {
         $tes = Tes::updateOrCreate(
-            ['nama_tes' => 'Tes Potensi Karir #1'],
+            ['nama_tes' => 'Tes Asesmen Potensi Karir Siswa SMK (TKJ, DPIB, Kriya Kayu)'],
             [
-                'deskripsi' => 'Kuesioner uji coba manual — Minat, Bakat, Nilai Akademik, Kepribadian',
+                'deskripsi' => 'Instrumen asesmen bimbingan karir terpadu mencakup Minat (RIASEC), Bakat (DAT), Kepribadian (DISC), dan Nilai Akademik untuk penentuan arah karir & studi lanjut.',
                 'durasi_menit' => 30,
                 'status_aktif' => true,
             ]
         );
 
+        // Pastikan hanya tes utama ini yang berstatus aktif di web
+        Tes::query()->where('id', '!=', $tes->id)->update(['status_aktif' => false]);
+
         $kriterias = Kriteria::with('opsis')->get()->keyBy('nama_kriteria');
         $definitions = [
-            // === MINAT (RIASEC) ===
-            // Realistic
-            ['urutan' => 1, 'kriteria' => 'Minat', 'opsi' => 'Realistic', 'pertanyaan' => 'Merakit komputer, memasang jaringan kabel LAN, atau merawat perangkat keras (TKJ).'],
-            ['urutan' => 2, 'kriteria' => 'Minat', 'opsi' => 'Realistic', 'pertanyaan' => 'Menanam tanaman pangan/hidroponik, mengolah tanah, atau merawat hewan ternak (ATPH).'],
-            ['urutan' => 3, 'kriteria' => 'Minat', 'opsi' => 'Realistic', 'pertanyaan' => 'Memperbaiki peralatan rumah tangga, menggunakan alat perkakas kayu/besi secara praktis.'],
+            // ==========================================
+            // === 1. KRITERIA MINAT (RIASEC: 24 Soal) ===
+            // ==========================================
+            
+            // --- Realistic (Praktik Alat, Mesin, Lapangan) ---
+            ['urutan' => 1, 'kriteria' => 'Minat', 'opsi' => 'Realistic', 'pertanyaan' => 'Merakit dan menginstalasi perangkat keras komputer atau memasang kabel jaringan LAN (TKJ).'],
+            ['urutan' => 2, 'kriteria' => 'Minat', 'opsi' => 'Realistic', 'pertanyaan' => 'Mengoperasikan alat ukur tanah (theodolite/waterpass) dan peralatan survei lapangan konstruksi (DPIB).'],
+            ['urutan' => 3, 'kriteria' => 'Minat', 'opsi' => 'Realistic', 'pertanyaan' => 'Memotong, merangkai, dan membentuk komponen mebel atau kerajinan kayu di bengkel kerja (Kriya Kayu).'],
+            ['urutan' => 4, 'kriteria' => 'Minat', 'opsi' => 'Realistic', 'pertanyaan' => 'Memperbaiki peralatan mekanik/elektronik, mesin perkakas, atau perangkat instalasi fisik secara praktis.'],
 
-            // Investigative
-            ['urutan' => 4, 'kriteria' => 'Minat', 'opsi' => 'Investigative', 'pertanyaan' => 'Mendiagnosis kerusakan sistem jaringan (troubleshooting) atau memprogram aplikasi komputer (TKJ).'],
-            ['urutan' => 5, 'kriteria' => 'Minat', 'opsi' => 'Investigative', 'pertanyaan' => 'Menganalisis jenis penyakit tanaman, meneliti kecocokan pupuk kimia/organik di lahan (ATPH).'],
-            ['urutan' => 6, 'kriteria' => 'Minat', 'opsi' => 'Investigative', 'pertanyaan' => 'Membaca artikel ilmiah, memecahkan teka-teki logika matematika, atau menyelidiki akar masalah.'],
+            // --- Investigative (Analisis, Troubleshooting, Riset) ---
+            ['urutan' => 5, 'kriteria' => 'Minat', 'opsi' => 'Investigative', 'pertanyaan' => 'Mendiagnosis kerusakan sistem jaringan komputer dan melakukan troubleshooting konfigurasi IT (TKJ).'],
+            ['urutan' => 6, 'kriteria' => 'Minat', 'opsi' => 'Investigative', 'pertanyaan' => 'Menganalisis perhitungan kekuatan struktur bangunan dan detail pemodelan digital 3D/BIM (DPIB).'],
+            ['urutan' => 7, 'kriteria' => 'Minat', 'opsi' => 'Investigative', 'pertanyaan' => 'Menguji daya tahan material kayu, kekuatan sambungan konstruksi, dan setting parameter mesin CNC (Kriya Kayu).'],
+            ['urutan' => 8, 'kriteria' => 'Minat', 'opsi' => 'Investigative', 'pertanyaan' => 'Membaca artikel ilmiah, meneliti data teknis, dan memecahkan teka-teki logika yang membutuhkan analisis mendalam.'],
 
-            // Artistic
-            ['urutan' => 7, 'kriteria' => 'Minat', 'opsi' => 'Artistic', 'pertanyaan' => 'Mendesain tata letak antarmuka (UI) web atau merancang poster promosi digital (TKJ).'],
-            ['urutan' => 8, 'kriteria' => 'Minat', 'opsi' => 'Artistic', 'pertanyaan' => 'Merancang materi promosi produk kreatif, mendesain logo usaha, atau membuat konten video pemasaran (AKL/Bisnis).'],
-            ['urutan' => 9, 'kriteria' => 'Minat', 'opsi' => 'Artistic', 'pertanyaan' => 'Mengekspresikan ide dengan melukis, menulis puisi/cerita, atau memainkan alat musik.'],
+            // --- Artistic (Desain, Estetika, Seni Visual) ---
+            ['urutan' => 9, 'kriteria' => 'Minat', 'opsi' => 'Artistic', 'pertanyaan' => 'Mendesain tampilan visual antarmuka pengguna (UI/UX) web atau materi media promosi kreatif (TKJ).'],
+            ['urutan' => 10, 'kriteria' => 'Minat', 'opsi' => 'Artistic', 'pertanyaan' => 'Merancang konsep estetika arsitektur, gambar fasad bangunan, dan visualisasi tata ruang interior 3D (DPIB).'],
+            ['urutan' => 11, 'kriteria' => 'Minat', 'opsi' => 'Artistic', 'pertanyaan' => 'Membuat sketsa motif ukiran seni, perabot furnitur kayu bernilai estetis, atau produk cinderamata artistik (Kriya Kayu).'],
+            ['urutan' => 12, 'kriteria' => 'Minat', 'opsi' => 'Artistic', 'pertanyaan' => 'Mengekspresikan gagasan dan ide kreatif melalui karya seni rupa, desain grafis, ilustrasi, atau fotografi.'],
 
-            // Social
-            ['urutan' => 10, 'kriteria' => 'Minat', 'opsi' => 'Social', 'pertanyaan' => 'Membimbing dan mengajarkan teman tentang penggunaan aplikasi atau instalasi perangkat lunak (TKJ).'],
-            ['urutan' => 11, 'kriteria' => 'Minat', 'opsi' => 'Social', 'pertanyaan' => 'Aktif menjadi pengurus kelas, OSIS, atau membantu guru bimbingan konseling di sekolah.'],
-            ['urutan' => 12, 'kriteria' => 'Minat', 'opsi' => 'Social', 'pertanyaan' => 'Melakukan bakti sosial, merawat orang sakit, atau memberikan saran kepada teman yang curhat.'],
+            // --- Social (Pelayanan, Pendampingan, Edukasi) ---
+            ['urutan' => 13, 'kriteria' => 'Minat', 'opsi' => 'Social', 'pertanyaan' => 'Membimbing dan mengajari teman sekelas dalam memahami materi pelajaran atau penggunaan perangkat praktik kejuruan.'],
+            ['urutan' => 14, 'kriteria' => 'Minat', 'opsi' => 'Social', 'pertanyaan' => 'Berpartisipasi aktif dalam kegiatan organisasi sekolah (OSIS/Pramuka) atau membantu guru bimbingan konseling.'],
+            ['urutan' => 15, 'kriteria' => 'Minat', 'opsi' => 'Social', 'pertanyaan' => 'Menjalin kerja sama tim yang rukun, mendengarkan saran teman, dan membantu menyelesaikan persoalan kelompok.'],
+            ['urutan' => 16, 'kriteria' => 'Minat', 'opsi' => 'Social', 'pertanyaan' => 'Melakukan bakti sosial, peduli pada sesama, dan memberikan pelayanan bantuan sukarela kepada masyarakat.'],
 
-            // Enterprising
-            ['urutan' => 13, 'kriteria' => 'Minat', 'opsi' => 'Enterprising', 'pertanyaan' => 'Menjual jasa instalasi jaringan/rakit komputer atau memimpin tim proyek IT sekolah (TKJ).'],
-            ['urutan' => 14, 'kriteria' => 'Minat', 'opsi' => 'Enterprising', 'pertanyaan' => 'Memasarkan produk tanaman hidroponik, menegosiasikan harga jual hasil tani sekolah (ATPH).'],
-            ['urutan' => 15, 'kriteria' => 'Minat', 'opsi' => 'Enterprising', 'pertanyaan' => 'Mengkoordinasi acara kelompok, membujuk orang lain untuk membeli produk, atau memimpin organisasi.'],
+            // --- Enterprising (Wirausaha, Bisnis, Kepemimpinan) ---
+            ['urutan' => 17, 'kriteria' => 'Minat', 'opsi' => 'Enterprising', 'pertanyaan' => 'Menawarkan dan menjual jasa instalasi IT, servis komputer, atau pengadaan perangkat teknologi (TKJ).'],
+            ['urutan' => 18, 'kriteria' => 'Minat', 'opsi' => 'Enterprising', 'pertanyaan' => 'Mempromosikan jasa pembuatan gambar kerja arsitektur, desain rumah, atau estimasi RAB proyek (DPIB).'],
+            ['urutan' => 19, 'kriteria' => 'Minat', 'opsi' => 'Enterprising', 'pertanyaan' => 'Memasarkan produk mebel custom, kerajinan souvenir kayu, dan menegosiasikan harga jual dengan pelanggan (Kriya Kayu).'],
+            ['urutan' => 20, 'kriteria' => 'Minat', 'opsi' => 'Enterprising', 'pertanyaan' => 'Memimpin kelompok kerja, berani menangkap peluang bisnis baru, dan memotivasi tim mencapai target penjualan.'],
 
-            // Conventional
-            ['urutan' => 16, 'kriteria' => 'Minat', 'opsi' => 'Conventional', 'pertanyaan' => 'Menginventarisir dan mencatat nomor aset server, kabel, atau komputer secara teratur (TKJ).'],
-            ['urutan' => 17, 'kriteria' => 'Minat', 'opsi' => 'Conventional', 'pertanyaan' => 'Mencatat uang kas kelas, mengelola pembukuan keuangan, atau mengarsipkan kwitansi belanja (AKL).'],
-            ['urutan' => 18, 'kriteria' => 'Minat', 'opsi' => 'Conventional', 'pertanyaan' => 'Menyusun jadwal kegiatan mingguan secara rapi atau merapikan arsip dokumen sesuai abjad.'],
+            // --- Conventional (Arsip, Data Teratur, Prosedural) ---
+            ['urutan' => 21, 'kriteria' => 'Minat', 'opsi' => 'Conventional', 'pertanyaan' => 'Mencatat nomor inventaris server, pengkabelan, dan mendokumentasikan log pemeliharaan perangkat IT (TKJ).'],
+            ['urutan' => 22, 'kriteria' => 'Minat', 'opsi' => 'Conventional', 'pertanyaan' => 'Mengarsipkan berkas spesifikasi teknis bangunan, dokumen tender, dan tabel Rencana Anggaran Biaya/RAB (DPIB).'],
+            ['urutan' => 23, 'kriteria' => 'Minat', 'opsi' => 'Conventional', 'pertanyaan' => 'Mengontrol kartu stok bahan baku kayu, memeriksa catatan mutu QC produk, dan pembukuan pesanan mebel (Kriya Kayu).'],
+            ['urutan' => 24, 'kriteria' => 'Minat', 'opsi' => 'Conventional', 'pertanyaan' => 'Menyusun jadwal kegiatan secara tertib, mencatat pembukuan keuangan/kas, dan merapikan dokumen sesuai SOP.'],
 
-            // === BAKAT (DAT) ===
-            // Verbal
-            ['urutan' => 19, 'kriteria' => 'Bakat', 'opsi' => 'Verbal', 'pertanyaan' => 'Saya dapat memahami dengan cepat maksud dari artikel bacaan yang panjang dan kompleks.'],
-            ['urutan' => 20, 'kriteria' => 'Bakat', 'opsi' => 'Verbal', 'pertanyaan' => 'Saya merasa mudah menulis laporan kegiatan dengan kalimat yang rapi dan mudah dimengerti.'],
-            ['urutan' => 21, 'kriteria' => 'Bakat', 'opsi' => 'Verbal', 'pertanyaan' => 'Saya merasa percaya diri saat berpidato, membawakan presentasi tugas, atau berdebat.'],
+            // ==========================================
+            // === 2. KRITERIA BAKAT (DAT: 16 Soal) ======
+            // ==========================================
 
-            // Numerik/Logika
-            ['urutan' => 22, 'kriteria' => 'Bakat', 'opsi' => 'Numerik/Logika', 'pertanyaan' => 'Saya mampu menyelesaikan soal perhitungan matematika atau angka secara cepat tanpa alat bantu.'],
-            ['urutan' => 23, 'kriteria' => 'Bakat', 'opsi' => 'Numerik/Logika', 'pertanyaan' => 'Saya dengan mudah dapat menarik kesimpulan dari grafik data, tabel keuangan, atau statistik.'],
-            ['urutan' => 24, 'kriteria' => 'Bakat', 'opsi' => 'Numerik/Logika', 'pertanyaan' => 'Saya terbiasa menggunakan logika runut dan sistematis dalam memecahkan masalah.'],
+            // --- Verbal ---
+            ['urutan' => 25, 'kriteria' => 'Bakat', 'opsi' => 'Verbal', 'pertanyaan' => 'Saya mampu memahami maksud dari instruksi kerja tertulis dan artikel teknis yang panjang dengan cepat.'],
+            ['urutan' => 26, 'kriteria' => 'Bakat', 'opsi' => 'Verbal', 'pertanyaan' => 'Saya merasa mudah menyusun laporan praktik, proposal kegiatan, atau tugas tertulis dengan bahasa yang terstruktur.'],
+            ['urutan' => 27, 'kriteria' => 'Bakat', 'opsi' => 'Verbal', 'pertanyaan' => 'Saya merasa percaya diri saat berbicara di depan umum, mempresentasikan hasil karya, atau berdiskusi.'],
+            ['urutan' => 28, 'kriteria' => 'Bakat', 'opsi' => 'Verbal', 'pertanyaan' => 'Saya mudah menangkap arti istilah baru dan mampu menjelaskan konsep yang rumit dengan bahasa yang mudah dipahami.'],
 
-            // Spasial/Visual
-            ['urutan' => 25, 'kriteria' => 'Bakat', 'opsi' => 'Spasial/Visual', 'pertanyaan' => 'Saya dapat membayangkan bentuk benda tiga dimensi secara jelas di kepala dari berbagai sudut.'],
-            ['urutan' => 26, 'kriteria' => 'Bakat', 'opsi' => 'Spasial/Visual', 'pertanyaan' => 'Saya pandai menggambar sketsa tata letak ruangan, peta arah, atau desain pola tertentu.'],
-            ['urutan' => 27, 'kriteria' => 'Bakat', 'opsi' => 'Spasial/Visual', 'pertanyaan' => 'Saya mudah mendeteksi ketidaksejajaran visual, ketimpangan warna, atau kesalahan tata letak.'],
+            // --- Numerik/Logika ---
+            ['urutan' => 29, 'kriteria' => 'Bakat', 'opsi' => 'Numerik/Logika', 'pertanyaan' => 'Saya mampu menyelesaikan perhitungan matematika atau kalkulasi angka secara cepat dan teliti.'],
+            ['urutan' => 30, 'kriteria' => 'Bakat', 'opsi' => 'Numerik/Logika', 'pertanyaan' => 'Saya dapat dengan mudah membaca, menganalisis, dan menarik kesimpulan dari grafik data atau tabel angka.'],
+            ['urutan' => 31, 'kriteria' => 'Bakat', 'opsi' => 'Numerik/Logika', 'pertanyaan' => 'Saya terbiasa memecahkan masalah dengan langkah-langkah logika yang berurutan, runut, dan sistematis.'],
+            ['urutan' => 32, 'kriteria' => 'Bakat', 'opsi' => 'Numerik/Logika', 'pertanyaan' => 'Saya peka terhadap kesalahan hitungan, ketidakkonsistenan data, atau pola hubungan angka dalam pekerjaan.'],
 
-            // Motorik/Praktikal
-            ['urutan' => 28, 'kriteria' => 'Bakat', 'opsi' => 'Motorik/Praktikal', 'pertanyaan' => 'Saya sangat terampil menggunakan tangan untuk memotong, merakit, atau mengupas benda secara presisi.'],
-            ['urutan' => 29, 'kriteria' => 'Bakat', 'opsi' => 'Motorik/Praktikal', 'pertanyaan' => 'Saya memiliki kelincahan fisik dan refleks yang baik saat melakukan kegiatan olahraga/praktik fisik.'],
-            ['urutan' => 30, 'kriteria' => 'Bakat', 'opsi' => 'Motorik/Praktikal', 'pertanyaan' => 'Saya kuat bekerja berdiri lama atau beraktivitas fisik di lapangan dalam jangka waktu panjang.'],
+            // --- Spasial/Visual ---
+            ['urutan' => 33, 'kriteria' => 'Bakat', 'opsi' => 'Spasial/Visual', 'pertanyaan' => 'Saya mampu membayangkan bentuk bangun 3 dimensi di dalam pikiran secara jelas dari berbagai sudut pandang.'],
+            ['urutan' => 34, 'kriteria' => 'Bakat', 'opsi' => 'Spasial/Visual', 'pertanyaan' => 'Saya pandai menggambar sketsa tata letak ruangan, peta arah/topologi, denah kerja, atau bentuk geometri presisi.'],
+            ['urutan' => 35, 'kriteria' => 'Bakat', 'opsi' => 'Spasial/Visual', 'pertanyaan' => 'Saya mudah mendeteksi ketidaksejajaran visual, ketimpangan proporsi/warna, atau kesalahan tata letak visual.'],
+            ['urutan' => 36, 'kriteria' => 'Bakat', 'opsi' => 'Spasial/Visual', 'pertanyaan' => 'Saya mudah membaca dan memahami gambar kerja teknik potongan (cross-section) serta proyeksi isometri.'],
 
-            // === KEPRIBADIAN (DISC) ===
-            // Dominance
-            ['urutan' => 31, 'kriteria' => 'Kepribadian', 'opsi' => 'Dominance', 'pertanyaan' => 'Saya berani mengemukakan ide secara frontal di kelompok, suka memimpin, dan fokus pada target cepat.'],
-            ['urutan' => 32, 'kriteria' => 'Kepribadian', 'opsi' => 'Dominance', 'pertanyaan' => 'Saya termotivasi oleh tantangan, menyukai kompetisi, dan siap mengambil risiko untuk menang.'],
+            // --- Motorik/Praktikal ---
+            ['urutan' => 37, 'kriteria' => 'Bakat', 'opsi' => 'Motorik/Praktikal', 'pertanyaan' => 'Saya sangat terampil menggunakan tangan untuk memotong, merakit komponen kecil, atau memahat/mengukir secara presisi.'],
+            ['urutan' => 38, 'kriteria' => 'Bakat', 'opsi' => 'Motorik/Praktikal', 'pertanyaan' => 'Saya memiliki koordinasi mata-tangan yang baik dan refleks yang sigap saat mengoperasikan alat/mesin praktik.'],
+            ['urutan' => 39, 'kriteria' => 'Bakat', 'opsi' => 'Motorik/Praktikal', 'pertanyaan' => 'Saya memiliki ketahanan fisik yang baik untuk bekerja berdiri lama atau beraktivitas praktik di workshop/lapangan.'],
+            ['urutan' => 40, 'kriteria' => 'Bakat', 'opsi' => 'Motorik/Praktikal', 'pertanyaan' => 'Saya terbiasa memegang dan menggunakan berbagai alat perkakas bengkel kerja secara aman, cekatan, dan terampil.'],
 
-            // Influence
-            ['urutan' => 33, 'kriteria' => 'Kepribadian', 'opsi' => 'Influence', 'pertanyaan' => 'Saya senang menghidupkan suasana obrolan kelompok, bercanda, dan berteman dengan siapa saja.'],
-            ['urutan' => 34, 'kriteria' => 'Kepribadian', 'opsi' => 'Influence', 'pertanyaan' => 'Saya pandai membujuk teman untuk menyetujui pendapat saya dan menularkan antusiasme positif.'],
+            // ==========================================
+            // === 3. KRITERIA KEPRIBADIAN (DISC: 8 Soal) ===
+            // ==========================================
 
-            // Steadiness
-            ['urutan' => 35, 'kriteria' => 'Kepribadian', 'opsi' => 'Steadiness', 'pertanyaan' => 'Saya adalah pendengar curhat yang baik, bersikap sabar, dan menyukai kerja sama tim yang rukun.'],
-            ['urutan' => 36, 'kriteria' => 'Kepribadian', 'opsi' => 'Steadiness', 'pertanyaan' => 'Saya lebih menyukai ritme belajar yang teratur, damai tanpa konflik, dan tidak suka kejutan mendadak.'],
+            // --- Dominance ---
+            ['urutan' => 41, 'kriteria' => 'Kepribadian', 'opsi' => 'Dominance', 'pertanyaan' => 'Saya berani mengambil keputusan cepat, bersikap tegas dalam memimpin, dan fokus pada target hasil maksimal.'],
+            ['urutan' => 42, 'kriteria' => 'Kepribadian', 'opsi' => 'Dominance', 'pertanyaan' => 'Saya termotivasi oleh tantangan sulit, menyukai kompetisi positif, dan siap mengambil risiko demi pencapaian target.'],
 
-            // Compliance
-            ['urutan' => 37, 'kriteria' => 'Kepribadian', 'opsi' => 'Compliance', 'pertanyaan' => 'Saya selalu mengecek detail tugas berulang kali untuk memastikan tidak ada kesalahan ejaan/angka.'],
-            ['urutan' => 38, 'kriteria' => 'Kepribadian', 'opsi' => 'Compliance', 'pertanyaan' => 'Saya merasa nyaman mengikuti aturan sekolah secara ketat dan bertindak sesuai standar operasi kerja.'],
+            // --- Influence ---
+            ['urutan' => 43, 'kriteria' => 'Kepribadian', 'opsi' => 'Influence', 'pertanyaan' => 'Saya senang menghidupkan suasana kelompok, ramah bergaul dengan orang baru, dan bersikap optimis.'],
+            ['urutan' => 44, 'kriteria' => 'Kepribadian', 'opsi' => 'Influence', 'pertanyaan' => 'Saya pandai membujuk orang lain secara positif, menularkan semangat antusiasme, dan membangun komunikasi yang cair.'],
 
-            // === NILAI AKADEMIK (Numerik) ===
-            ['urutan' => 39, 'kriteria' => 'Nilai Akademik', 'opsi' => null, 'pertanyaan' => 'Berapa nilai rata-rata mata pelajaran Produktif Kejuruan (TKJ / AKL / ATPH) Anda semester lalu?'],
-            ['urutan' => 40, 'kriteria' => 'Nilai Akademik', 'opsi' => null, 'pertanyaan' => 'Berapa nilai rata-rata mata pelajaran Eksakta (Matematika, IPA, Kimia) Anda semester lalu?'],
-            ['urutan' => 41, 'kriteria' => 'Nilai Akademik', 'opsi' => null, 'pertanyaan' => 'Berapa nilai rata-rata mata pelajaran Umum (Bahasa Indonesia, Bahasa Inggris, PKN) Anda semester lalu?'],
+            // --- Steadiness ---
+            ['urutan' => 45, 'kriteria' => 'Kepribadian', 'opsi' => 'Steadiness', 'pertanyaan' => 'Saya adalah pendengar yang sabar, dapat diandalkan oleh teman, dan menyukai suasana kerja sama yang rukun tanpa konflik.'],
+            ['urutan' => 46, 'kriteria' => 'Kepribadian', 'opsi' => 'Steadiness', 'pertanyaan' => 'Saya lebih menyukai ritme kerja yang stabil, teratur, konsisten, dan tidak menyukai perubahan jadwal mendadak.'],
+
+            // --- Compliance ---
+            ['urutan' => 47, 'kriteria' => 'Kepribadian', 'opsi' => 'Compliance', 'pertanyaan' => 'Saya selalu mengecek detail tugas berulang kali untuk memastikan tidak ada kesalahan ejaan, angka, atau ukuran cacat.'],
+            ['urutan' => 48, 'kriteria' => 'Kepribadian', 'opsi' => 'Compliance', 'pertanyaan' => 'Saya merasa nyaman mengikuti aturan standar operasional prosedur (SOP) secara disiplin, rapi, dan taat azas.'],
+
+            // ==========================================
+            // === 4. NILAI AKADEMIK (Numerik: 2 Soal) ===
+            // ==========================================
+            ['urutan' => 49, 'kriteria' => 'Nilai Akademik', 'opsi' => null, 'pertanyaan' => 'Berapa nilai rata-rata mata pelajaran Produktif Kejuruan (TKJ / DPIB / Kriya Kayu) Anda pada semester terakhir? (0-100)'],
+            ['urutan' => 50, 'kriteria' => 'Nilai Akademik', 'opsi' => null, 'pertanyaan' => 'Berapa nilai rata-rata mata pelajaran Umum & Eksakta (Matematika, B. Indonesia, B. Inggris, Fisika/IPA) Anda pada semester terakhir? (0-100)'],
         ];
+
+        // Hapus soal di luar nomor urut 1-50 (jika ada sisa lama)
+        $tes->soals()->where('urutan', '>', count($definitions))->delete();
 
         foreach ($definitions as $definition) {
             $kriteria = $kriterias->get($definition['kriteria']);
@@ -166,7 +192,7 @@ class KuesionerDemoSeeder extends Seeder
                 );
             }
 
-            // Bersihkan pilihan jawaban lain yang tidak sesuai skor 1-5 (jika ada sisa sampah lama)
+            // Bersihkan pilihan jawaban lain yang tidak sesuai skor 1-5
             $soal->pilihanJawabans()->whereNotIn('pilihan', array_values($choiceTexts))->delete();
         }
     }
