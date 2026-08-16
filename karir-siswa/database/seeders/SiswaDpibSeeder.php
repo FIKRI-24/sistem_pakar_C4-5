@@ -39,9 +39,7 @@ class SiswaDpibSeeder extends Seeder
             $user->name = $data['name'];
             $user->email = $email;
             $user->role = User::ROLE_SISWA;
-            if (! $user->exists) {
-                $user->password = $defaultPassword;
-            }
+            $user->password = Hash::make($data['nis']);
             $user->save();
 
             // 2. Create or update profile siswa
