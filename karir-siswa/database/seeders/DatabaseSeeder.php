@@ -62,6 +62,9 @@ class DatabaseSeeder extends Seeder
             KarirFinalSeeder::class,
             DataTrainingDemoSeeder::class,
             KuesionerDemoSeeder::class,
+            SiswaTkjSeeder::class,
+            SiswaKriyaKayuSeeder::class,
+            SiswaDpibSeeder::class,
         ]);
     }
 }
